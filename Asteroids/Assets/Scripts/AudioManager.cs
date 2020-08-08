@@ -1,35 +1,30 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class AudioManager : MonoBehaviour
+[Serializable]
+public class AudioManager 
 {
-    public static AudioManager Instance;
-    private static Vector3 _audioSourceStartingLocation;
+    private static readonly Vector3 AudioSourceStartingLocation = new Vector3(0,0,0);
     private const int AudioSourcePoolIndex = 0;
     private static readonly HashSet<AudioSource> AudioSources = new HashSet<AudioSource>(); //Definately udse a hashset?
-
-    private void Awake()
-    {
-        InitialiseVariables();
-    }
+    [SerializeField]
+    public AudioClip buttonClick;
+    [SerializeField]
+    public AudioClip shooting;
 
     private void Start()
     {
         CreateHashSetOfAudioSourcesFromPools();
     }
 
-    private void InitialiseVariables()
-    {
-        _audioSourceStartingLocation = transform.position;
-    }
-    
     //This avoids having to use a getcomponent on the object every time you want to play a sound.
     private static void CreateHashSetOfAudioSourcesFromPools()
     {
         for (var i = 0; i < GameManager.Instance.objectPools.pools[AudioSourcePoolIndex].maximumActiveObjects; i++)
         {
-            AudioSources.Add(ObjectPooling.ReturnObjectFromPool(0, _audioSourceStartingLocation, Quaternion.identity).GetComponent<AudioSource>());
+            AudioSources.Add(ObjectPooling.ReturnObjectFromPool(0, AudioSourceStartingLocation, Quaternion.identity).GetComponent<AudioSource>());
         }
     }
 

@@ -1,13 +1,17 @@
 ﻿using Obstacles;
 using Statistics;
 using Player;
-using System;
+using PlayArea;
 using UnityEngine;
+using System;
+using UnityEngine.Serialization;
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
     private const bool ShowDebugMessages = true;
+    [SerializeField]
+    private AudioManager audioManager;
     public Camera mainCamera;
     public ObjectPooling objectPools;
     [SerializeField]
@@ -19,6 +23,7 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     private ObstacleManager obstacleManager;
     public UserInterfaceManager userInterfaceManager;
+    private static GameAreaTransporter _transporter = new GameAreaTransporter();
 
     private void Awake()
     {
@@ -27,7 +32,6 @@ public class GameManager : MonoBehaviour
     
     private void Start()
     {
-        StartGame();
         playerManager.PlayerStart();
     }
     
@@ -42,8 +46,9 @@ public class GameManager : MonoBehaviour
         playerManager.PlayerUpdate();
     }
 
-    private void StartGame()
+    public void StartGamePlay()
     {
+        ReleasePlayerConstraints();
         timeManager.StartTimer();
         obstacleManager.StartCreatObstacleSequence();
         
@@ -76,10 +81,16 @@ public class GameManager : MonoBehaviour
         
         DisplayDebugMessage("Game over");
     }
-
-    public Transform ReturnPLayer()
+    
+    private static void ReleasePlayerConstraints()
     {
-        return playerManager.playerObject;
+        PlayerMovement.CanMove = true;
+        PlayerMovement.CanRotate = true;
+    }
+
+    public static Transform ReturnPlayer()
+    {
+        return Instance.playerManager.playerTransform;
     }
     
     public static void DisplayDebugMessage(string message)
@@ -97,7 +108,7 @@ namespace Player
     [Serializable]
     public class PlayerManager
     {
-        public Transform playerObject;
+        [FormerlySerializedAs("playerObject")] public Transform playerTransform;
         public PlayerHealth playerHealth;
         public PlayerMovement playerMovement;
         public PlayerShooting playerShooting;
