@@ -1,9 +1,11 @@
-﻿using UnityEngine;
+﻿using UnityEditor.Presets;
+using UnityEngine;
 
 namespace Obstacles
 {
     public class Obstacle : MonoBehaviour
     {
+        public static bool playerPresent = false;
         public const int MaximumAsteroidSize = 2;
         private const int DamageFactor = 1;
         [HideInInspector][Range(0, MaximumAsteroidSize)] 
@@ -13,19 +15,14 @@ namespace Obstacles
         {
             if (other.CompareTag("Player"))
             {
+                playerPresent = true;
                 GameManager.instance.PlayerDamaged(DamageFactor);
-                other.GetComponent<BoxCollider2D>().enabled = false;
             }
         
             if (other.CompareTag("Bullet"))
             {
                 other.transform.parent.gameObject.SetActive(false);
                 Destroy();
-            }
-            
-            if (other.CompareTag("Obstacle"))
-            {
-                transform.parent.rotation = Quaternion.Euler(UnityEngine.Random.Range(0, 360), -90,-90);
             }
         }
 
@@ -39,7 +36,7 @@ namespace Obstacles
             asteroidSize--;
             var trans = transform;
             trans.parent.gameObject.SetActive(false);
-            GameManager.instance.OnLargerObstacleDestruction(asteroidSize, trans);
+            GameManager.instance.OnObstacleDestruction(asteroidSize, trans);
         }
     }
 }

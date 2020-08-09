@@ -13,7 +13,7 @@ namespace Obstacles
         private const float ObstacleMovementSpeed = 1f;
         [SerializeField]
         private Transform[] obstacleSpawnPositions;
-        private readonly Vector3[] obstacleSizes = {new Vector3(0.1f, 0.1f, 0.1f), new Vector3(0.5f, 0.5f, 0.5f), new Vector3(1f, 1f, 1f)};
+        private readonly Vector3[] obstacleSizes = {new Vector3(0.5f, 0.5f, 0.5f), new Vector3(1f, 1f, 1f), new Vector3(1f, 1f, 1f)};
         private const int ObjectPoolIndex = 2;
         private static Coroutine _obstacleCreationSequence;
         #region Time Between Obstacles

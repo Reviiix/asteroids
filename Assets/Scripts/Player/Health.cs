@@ -16,6 +16,7 @@ namespace Player
             if (_health == 0)
             {
                 dead(true);
+                return;
             }
 
             dead(false);

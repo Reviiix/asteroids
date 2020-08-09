@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Obstacles;
+using UnityEngine;
 using Vector3 = UnityEngine.Vector3;
 
 namespace PlayArea
@@ -28,6 +29,8 @@ namespace PlayArea
 
             if (other.gameObject.CompareTag("Player"))
             {
+                if (Obstacle.playerPresent) return;
+                
                 var screenEdge = ReturnScreenEdgeFromPosition(horizontalBox, other.transform.position);
 
                 GameAreaTransporter.MoveToScreenEdge(other.transform, screenEdge);

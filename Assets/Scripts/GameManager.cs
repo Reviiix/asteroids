@@ -7,10 +7,13 @@ using System;
 using System.Collections;
 using Shooting;
 
+
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
     private const bool ShowDebugMessages = true;
+    private const int DestructionPrefabPoolIndex = 3;
+    private const int SecondsBeforeContinuingGamePlay = 1;
     [SerializeField]
     private PlayerManager playerManager;
     [SerializeField]
@@ -20,6 +23,7 @@ public class GameManager : MonoBehaviour
     public Camera mainCamera;
     public ObjectPooling objectPools;
     public UserInterfaceManager userInterfaceManager;
+    
 
     private void Awake()
     {
@@ -67,27 +71,46 @@ public class GameManager : MonoBehaviour
     [ContextMenu("Player Damaged")]
     public void PlayerDamaged(int damage)
     {
-        ShakeObject.Shake(ReturnPlayer());
+        EnablePlayerConstraints(true);
         userInterfaceManager.UpdateLivesDisplay(false);
-        Health.TakeDamage(damage, delegate(bool dead)
+        Health.TakeDamage(damage, delegate(bool gameOver)
         {
-            if (dead)
+            PlayerDeathSequence(() =>
             {
-                EndGame();
-            }
+                GameAreaTransporter.PlaceObjectInCentre(ReturnPlayer());
+                if (gameOver)
+                {
+                    EndGame();
+                }
+                else
+                {
+                    StartCoroutine(Wait(SecondsBeforeContinuingGamePlay, ()=>
+                    {
+                        EnablePlayerConstraints(false);
+                    }));
+                }
+            });
+            DisplayDebugMessage("PlayerManager received " + damage + "damage.");
         });
-        
-        DisplayDebugMessage("PlayerManager received " + damage + "damage.");
     }
 
-    public void OnLargerObstacleDestruction(int asteroidSize, Transform position)
+    private static void PlayerDeathSequence(Action callBack)
     {
-        if (asteroidSize < 0) return;
+        ObjectPooling.ReturnObjectFromPool(DestructionPrefabPoolIndex, ReturnPlayer().position, Quaternion.identity);
+        instance.StartCoroutine(Wait(SecondsBeforeContinuingGamePlay, callBack));
+    }
+
+    public void OnObstacleDestruction(int asteroidSize, Transform position)
+    {
+        if (asteroidSize < 0)
+        {
+            ObjectPooling.ReturnObjectFromPool(DestructionPrefabPoolIndex, position.position, Quaternion.identity);
+            return;
+        }
         
         ScoreTracker.IncrementScore(asteroidSize);
-        
+
         obstacleManager.CreateObstacle(asteroidSize, position, true);
-        
         obstacleManager.CreateObstacle(asteroidSize, position, true);
     }
     
@@ -99,15 +122,19 @@ public class GameManager : MonoBehaviour
         obstacleManager.StopCreatObstacleSequence();
         HighSores.SetHighScore(ScoreTracker.score);
         userInterfaceManager.EnableGameOverCanvas();
-        DisplayDebugMessage("Game over");
+        DisplayDebugMessage("Game play over.");
     }
     
     public static void EnablePlayerConstraints(bool state)
     {
-        PlayerMovement.EnablePlayerConstraints(state);
+        PlayerMovement.EnablePlayerMovementConstraints(state);
         PlayerShooting.canShoot = !state;
+        instance.StartCoroutine(Wait(1, () =>
+        {
+            instance.playerManager.playerRigidBody.simulated = !state;
+        }));
     }
-
+    
     public static Transform ReturnPlayer()
     {
         return instance.playerManager.playerTransform;
@@ -135,12 +162,15 @@ namespace Player
     public class PlayerManager
     {
         public Transform playerTransform;
+        [HideInInspector]
+        public Rigidbody2D playerRigidBody;
         public Health playerHealth;
         public PlayerMovement playerMovement;
         public PlayerShooting playerShooting;
 
         public void PlayerInitialise()
         {
+            playerRigidBody = playerTransform.GetComponent<Rigidbody2D>();
             playerMovement.Initialise();
             playerShooting.Initialise();
         }
