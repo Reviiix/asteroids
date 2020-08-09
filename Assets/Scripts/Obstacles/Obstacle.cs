@@ -4,27 +4,16 @@ namespace Obstacles
 {
     public class Obstacle : MonoBehaviour
     {
-        private SpriteRenderer _renderer;
         public const int MaximumAsteroidSize = 2;
         private const int DamageFactor = 1;
         [HideInInspector][Range(0, MaximumAsteroidSize)] 
         public int asteroidSize;
 
-        private void Awake()
-        {
-            InitialiseVariables();
-        }
-
-        private void InitialiseVariables()
-        {
-            _renderer = GetComponent<SpriteRenderer>();
-        }
-
         private void OnTriggerEnter2D(Collider2D other)
         {
             if (other.CompareTag("Player"))
             {
-                GameManager.Instance.PlayerDamaged(DamageFactor);
+                GameManager.instance.PlayerDamaged(DamageFactor);
             }
         
             if (other.CompareTag("Bullet"))
@@ -38,13 +27,13 @@ namespace Obstacles
         {
             asteroidSize = startingAsteroidSize;
         }
-    
-
+        
         private void Destroy()
         {
-            transform.parent.gameObject.SetActive(false);
             asteroidSize--;
-            GameManager.Instance.OnLargerObstacleDestruction(asteroidSize, transform);
+            var trans = transform;
+            trans.parent.gameObject.SetActive(false);
+            GameManager.instance.OnLargerObstacleDestruction(asteroidSize, trans);
         }
     }
 }

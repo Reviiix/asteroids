@@ -6,11 +6,10 @@ using UnityEngine;
 using System;
 using System.Collections;
 using Shooting;
-using UnityEngine.Serialization;
 
 public class GameManager : MonoBehaviour
 {
-    public static GameManager Instance;
+    public static GameManager instance;
     private const bool ShowDebugMessages = true;
     [SerializeField]
     private AudioManager audioManager;
@@ -18,10 +17,6 @@ public class GameManager : MonoBehaviour
     public ObjectPooling objectPools;
     [SerializeField]
     private PlayerManager playerManager;
-    [SerializeField]
-    private ScoreManager scoreManager;
-    [SerializeField]
-    private TimeTracker timeManager;
     [SerializeField]
     private ObstacleManager obstacleManager;
     public UserInterfaceManager userInterfaceManager;
@@ -33,14 +28,22 @@ public class GameManager : MonoBehaviour
     
     private void Start()
     {
-        playerManager.PlayerStart();
-        BulletManager.InitialiseBulletList();
+        InitialisePlaneOldCSharpClasses();
+    }
+
+    private void InitialisePlaneOldCSharpClasses()
+    {
+        userInterfaceManager.Initialise();
+        playerManager.PlayerInitialise();
+        BulletManager.Initialise();
         ObstacleManager.Initialise();
+        TimeTracker.Initialise();
+        ScoreTracker.Initialise();
     }
     
     private void InitialiseVariables()
     {
-        Instance = this;
+        instance = this;
     }
     
     private void Update()
@@ -54,7 +57,7 @@ public class GameManager : MonoBehaviour
     public void StartGamePlay()
     {
         EnablePlayerConstraints(false);
-        timeManager.StartTimer();
+        TimeTracker.StartTimer();
         obstacleManager.StartCreatObstacleSequence();
         
         DisplayDebugMessage("Game play started.");
@@ -67,7 +70,7 @@ public class GameManager : MonoBehaviour
         {
             if (dead)
             {
-                //EndGame();
+                EndGame();
             }
         });
         
@@ -78,7 +81,7 @@ public class GameManager : MonoBehaviour
     {
         if (asteroidSize < 0) return;
         
-        ScoreManager.
+        ScoreTracker.IncrementScore(asteroidSize);
         
         obstacleManager.CreateObstacle(asteroidSize, position, true);
         
@@ -87,9 +90,11 @@ public class GameManager : MonoBehaviour
     
     private void EndGame()
     {
+        TimeTracker.StopTimer();
+        EnablePlayerConstraints(true);
         obstacleManager.StopCreatObstacleSequence();
-        timeManager.StopTimer();
-        
+        HighSores.SetHighScore(ScoreTracker.score);
+        userInterfaceManager.EnableGameOverCanvas();
         DisplayDebugMessage("Game over");
     }
     
@@ -101,7 +106,7 @@ public class GameManager : MonoBehaviour
 
     public static Transform ReturnPlayer()
     {
-        return Instance.playerManager.playerTransform;
+        return instance.playerManager.playerTransform;
     }
 
     public static IEnumerator Wait(float seconds, Action callBack)
@@ -125,12 +130,12 @@ namespace Player
     [Serializable]
     public class PlayerManager
     {
-        [FormerlySerializedAs("playerObject")] public Transform playerTransform;
-        [FormerlySerializedAs("playerHealth")] public Health health;
+        public Transform playerTransform;
+        public Health playerHealth;
         public PlayerMovement playerMovement;
         public PlayerShooting playerShooting;
 
-        public void PlayerStart()
+        public void PlayerInitialise()
         {
             playerMovement.Initialise();
             playerShooting.Initialise();
@@ -138,7 +143,7 @@ namespace Player
 
         public void PlayerUpdate()
         {
-            playerMovement.PlayerMovementManagerUpdate();
+            playerMovement.PlayerMovementUpdate();
             playerShooting.PlayerShootUpdate();
         }
     }

@@ -13,8 +13,6 @@ namespace Obstacles
         private const float ObstacleMovementSpeed = 1f;
         [SerializeField]
         private Transform[] obstacleSpawnPositions;
-        [SerializeField]
-        private Sprite[] obstacleSprites;
         private readonly Vector3[] obstacleSizes = {new Vector3(0.1f, 0.1f, 0.1f), new Vector3(0.5f, 0.5f, 0.5f), new Vector3(1f, 1f, 1f)};
         private const int ObjectPoolIndex = 2;
         private static Coroutine _obstacleCreationSequence;
@@ -41,18 +39,18 @@ namespace Obstacles
 
         public void StartCreatObstacleSequence()
         {
-            _obstacleCreationSequence = GameManager.Instance.StartCoroutine(CreatObstacles());
+            _obstacleCreationSequence = GameManager.instance.StartCoroutine(ContinuouslyCreatObstaclesSequence());
         }
     
         public void StopCreatObstacleSequence()
         {
             if (_obstacleCreationSequence != null)
             {
-                GameManager.Instance.StopCoroutine(_obstacleCreationSequence);
+                GameManager.instance.StopCoroutine(_obstacleCreationSequence);
             }
         }
 
-        private IEnumerator CreatObstacles()
+        private IEnumerator ContinuouslyCreatObstaclesSequence()
         {
             yield return _waitTimeBetweenSpawningObstacles;
             CreateObstacle(Obstacle.MaximumAsteroidSize, obstacleSpawnPositions[Random.Range(0, obstacleSpawnPositions.Length)]);
