@@ -5,11 +5,28 @@ namespace PlayArea
 {
     public class GameArea : MonoBehaviour
     {
+        private const int TimeAfterExitTillObjectDisabled = 1;
         public bool horizontalBox;
         
         //The box collider may need to be dynamically sized for varying screen sizes.
         private void OnTriggerExit2D(Collider2D other)
         {
+            if (other.gameObject.CompareTag("Bullet"))
+            {
+                other.transform.parent.gameObject.SetActive(false);
+                return;
+            }
+            
+            if (other.gameObject.CompareTag("Obstacle"))
+            {
+                StartCoroutine(GameManager.Wait(TimeAfterExitTillObjectDisabled, () =>
+                {
+                    other.gameObject.SetActive(false);
+                }));
+                return;
+            }
+
+            //N need to do another compare tag we can assume if another rigid body enters this trigger that isnt a bullet or an obstacle, its thr player.
             var screenEdge = ReturnScreenEdgeFromPosition(horizontalBox, other.transform.position);
             
             GameAreaTransporter.MoveToScreenEdge(other.transform, screenEdge);

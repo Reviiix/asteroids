@@ -36,7 +36,7 @@ public class UserInterfaceManager : MonoBehaviour
     private void InitialiseVariables()
     {
         startButton.onClick.AddListener(()=>GameManager.Instance.StartGamePlay());
-        startButton.onClick.AddListener(DisableStartCanvas);
+        startButton.onClick.AddListener(()=>EnableStartCanvas(false));
     }
 
     public void UpdateLivesDisplay(bool increase)
@@ -52,29 +52,23 @@ public class UserInterfaceManager : MonoBehaviour
         }
     }
     
-    private void EnableStartCanvas()
+    private void EnableStartCanvas(bool state = true)
     {
         EnabledAllNonPermanentCanvases(false);
-        startCanvas.enabled = true;
-        startButton.GetComponent<SequentiallyChangeTextColour>().enabled = true;
+        startCanvas.enabled = state;
+        startButton.GetComponent<SequentiallyChangeTextColour>().enabled = state;
     }
 
-    private void DisableStartCanvas()
-    {
-        EnabledAllNonPermanentCanvases(false);
-        startButton.GetComponent<SequentiallyChangeTextColour>().enabled = false;
-    }
-    
     public void EnableGameOverCanvas()
     {
         EnabledAllNonPermanentCanvases(false);
         gameOverCanvas.enabled = true;
     }
     
-    public void EnablePauseCanvas()
+    public void EnablePauseCanvas(bool state = true)
     {
         EnabledAllNonPermanentCanvases(false);
-        pauseCanvas.enabled = true;
+        pauseCanvas.enabled = state;
     }
     
     private void EnabledAllNonPermanentCanvases(bool state)

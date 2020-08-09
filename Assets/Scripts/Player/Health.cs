@@ -4,7 +4,7 @@ using UnityEngine;
 namespace Player
 {
     [Serializable]
-    public class PlayerHealth
+    public class Health
     {
         private const int MaxHealth = 3;
         [Range(0,MaxHealth)]

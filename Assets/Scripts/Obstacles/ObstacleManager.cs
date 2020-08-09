@@ -6,14 +6,12 @@ namespace Obstacles
     public class ObstacleManager : MonoBehaviour
     {
         [SerializeField]
-        private GameObject obstaclePrefab;
-        [SerializeField]
         private Transform[] obstacleSpawnPositions;
 
-        private const int ObstaclePoolIndex = 2;
+        private const int ObjectPoolIndex = 2;
         private static Coroutine _obstacleCreationSequence;
         private const int TimeBetweenSpawningObstacles = 10;
-        private readonly WaitForSeconds _waitTimeBetweenSpawningObstacles = new WaitForSeconds(TimeBetweenSpawningObstacles);
+        private static readonly WaitForSeconds WaitTimeBetweenSpawningObstacles = new WaitForSeconds(TimeBetweenSpawningObstacles);
 
         public void StartCreatObstacleSequence()
         {
@@ -30,13 +28,14 @@ namespace Obstacles
 
         private IEnumerator CreatObstacles()
         {
-            yield return _waitTimeBetweenSpawningObstacles;
+            yield return WaitTimeBetweenSpawningObstacles;
             CreateObstacle(Random.Range(0, Obstacle.MaximumAsteroidSize), obstacleSpawnPositions[Random.Range(0, obstacleSpawnPositions.Length)]);
         }
     
-        public void CreateObstacle(int asteroidSize, Transform position)
+        public static void CreateObstacle(int asteroidSize, Transform spawnPosition)
         {
-            GameManager.DisplayDebugMessage("Asteroid created. Size: " + asteroidSize + ". Location: " + position);
+            GameManager.DisplayDebugMessage("Asteroid created. Size: " + asteroidSize + ". Location: " + spawnPosition);
+            //ObjectPooling.ReturnObjectFromPool(ObjectPoolIndex, spawnPosition.position, Quaternion.identity);
         }
     }
 }

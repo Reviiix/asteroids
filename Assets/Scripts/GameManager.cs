@@ -4,6 +4,8 @@ using Player;
 using PlayArea;
 using UnityEngine;
 using System;
+using System.Collections;
+using Shooting;
 using UnityEngine.Serialization;
 
 public class GameManager : MonoBehaviour
@@ -33,6 +35,7 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         playerManager.PlayerStart();
+        BulletManager.InitialiseBulletList();
     }
     
     private void InitialiseVariables()
@@ -44,11 +47,12 @@ public class GameManager : MonoBehaviour
     {
         //One central update is better than multiple. Slight performance increase and easier to trace bugs.
         playerManager.PlayerUpdate();
+        BulletManager.MoveBullets();
     }
 
     public void StartGamePlay()
     {
-        ReleasePlayerConstraints();
+        EnablePlayerConstraints(false);
         timeManager.StartTimer();
         obstacleManager.StartCreatObstacleSequence();
         
@@ -58,7 +62,7 @@ public class GameManager : MonoBehaviour
     public void PlayerDamaged(int damage)
     {
         userInterfaceManager.UpdateLivesDisplay(false);
-        PlayerHealth.TakeDamage(damage, delegate(bool dead)
+        Health.TakeDamage(damage, delegate(bool dead)
         {
             if (dead)
             {
@@ -71,7 +75,7 @@ public class GameManager : MonoBehaviour
 
     public void CreateNewAsteroidFromOld(int asteroidSize, Transform position)
     {
-        obstacleManager.CreateObstacle(asteroidSize, position);
+        ObstacleManager.CreateObstacle(asteroidSize, position);
     }
     
     private void EndGame()
@@ -82,15 +86,21 @@ public class GameManager : MonoBehaviour
         DisplayDebugMessage("Game over");
     }
     
-    private static void ReleasePlayerConstraints()
+    public static void EnablePlayerConstraints(bool state)
     {
-        PlayerMovement.CanMove = true;
-        PlayerMovement.CanRotate = true;
+        PlayerMovement.EnablePlayerConstraints(state);
+        PlayerShooting.canShoot = !state;
     }
 
     public static Transform ReturnPlayer()
     {
         return Instance.playerManager.playerTransform;
+    }
+
+    public static IEnumerator Wait(float seconds, Action callBack)
+    {
+        yield return new WaitForSeconds(seconds);
+        callBack();
     }
     
     public static void DisplayDebugMessage(string message)
@@ -109,13 +119,14 @@ namespace Player
     public class PlayerManager
     {
         [FormerlySerializedAs("playerObject")] public Transform playerTransform;
-        public PlayerHealth playerHealth;
+        [FormerlySerializedAs("playerHealth")] public Health health;
         public PlayerMovement playerMovement;
         public PlayerShooting playerShooting;
 
         public void PlayerStart()
         {
             playerMovement.Initialise();
+            playerShooting.Initialise();
         }
 
         public void PlayerUpdate()

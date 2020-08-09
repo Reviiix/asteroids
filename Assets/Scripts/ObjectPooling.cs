@@ -4,7 +4,7 @@ using UnityEngine;
 public class ObjectPooling : MonoBehaviour
 {
     public List<Pool> pools;
-    private static readonly Dictionary<int, Queue<GameObject>> PoolDictionary = new Dictionary<int, Queue<GameObject>>();
+    public static readonly Dictionary<int, Queue<GameObject>> PoolDictionary = new Dictionary<int, Queue<GameObject>>();
 
     private void Awake()
     {

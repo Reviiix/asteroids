@@ -7,10 +7,10 @@ namespace Player
     public class PlayerMovement
     {
         private static Camera _mainCamera;
-        public static bool CanMove = false;
-        public static bool CanRotate = true;
+        private static bool _canMove;
+        private static bool _canRotate = true;
         private const float RotationSpeed = 10;
-        private const float MovementSpeed = 3;
+        public const float MovementSpeed = 3;
         #region MousePlayerMinimumDistance
         private static float _camerasDistanceFromGame;
         private float _mousePlayerMinimumDistance = 0.1f;
@@ -23,7 +23,7 @@ namespace Player
         private Transform _player;
         
 
-        public void Initialise() //cant use constructor because singleton game manager isn't set yet.
+        public void Initialise()
         {
             _player = GameManager.ReturnPlayer();
             _mainCamera = GameManager.Instance.mainCamera;
@@ -32,14 +32,20 @@ namespace Player
 
         public void PlayerMovementManagerUpdate()
         {
-            if (CanRotate)
+            if (_canRotate)
             {
                 RotateObjectTowardsPointer(_mainCamera, _player, RotationSpeed);
             }
-            if (CanMove)
+            if (_canMove)
             {
                 MoveObjectTowardsPointer(_mainCamera, _player, MovementSpeed, MousePlayerMinimumDistance);
             }
+        }
+
+        public static void EnablePlayerConstraints(bool state)
+        {
+            _canMove = !state;
+            _canRotate = !state;
         }
 
         private static void RotateObjectTowardsPointer(Camera camera, Transform transformToRotate, float rotationSpeed)
