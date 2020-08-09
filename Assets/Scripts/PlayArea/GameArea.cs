@@ -21,12 +21,12 @@ namespace PlayArea
             {
                 StartCoroutine(GameManager.Wait(TimeAfterExitTillObjectDisabled, () =>
                 {
-                    other.gameObject.SetActive(false);
+                    other.transform.parent.gameObject.SetActive(false);
                 }));
                 return;
             }
 
-            //N need to do another compare tag we can assume if another rigid body enters this trigger that isnt a bullet or an obstacle, its thr player.
+            //No need to do another compare tag. We can assume if another rigid body enters this trigger that isn't a bullet or an obstacle, its the player (This will not remain true if more rigid bodies are added to the scene.).
             var screenEdge = ReturnScreenEdgeFromPosition(horizontalBox, other.transform.position);
             
             GameAreaTransporter.MoveToScreenEdge(other.transform, screenEdge);

@@ -1,9 +1,7 @@
-﻿using UnityEngine;
-
-namespace Statistics
+﻿namespace Statistics
 {
-    public class ScoreManager : MonoBehaviour
+    public static class ScoreManager
     {
-        public const string ScorePrefix = "SCORE: ";
+
     }
 }

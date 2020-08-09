@@ -25,7 +25,6 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     private ObstacleManager obstacleManager;
     public UserInterfaceManager userInterfaceManager;
-    private static GameAreaTransporter _transporter = new GameAreaTransporter();
 
     private void Awake()
     {
@@ -36,6 +35,7 @@ public class GameManager : MonoBehaviour
     {
         playerManager.PlayerStart();
         BulletManager.InitialiseBulletList();
+        ObstacleManager.Initialise();
     }
     
     private void InitialiseVariables()
@@ -48,6 +48,7 @@ public class GameManager : MonoBehaviour
         //One central update is better than multiple. Slight performance increase and easier to trace bugs.
         playerManager.PlayerUpdate();
         BulletManager.MoveBullets();
+        ObstacleManager.MoveObstacles();
     }
 
     public void StartGamePlay()
@@ -66,16 +67,22 @@ public class GameManager : MonoBehaviour
         {
             if (dead)
             {
-                EndGame();
+                //EndGame();
             }
         });
         
         DisplayDebugMessage("PlayerManager received " + damage + "damage.");
     }
 
-    public void CreateNewAsteroidFromOld(int asteroidSize, Transform position)
+    public void OnLargerObstacleDestruction(int asteroidSize, Transform position)
     {
-        ObstacleManager.CreateObstacle(asteroidSize, position);
+        if (asteroidSize < 0) return;
+        
+        ScoreManager.
+        
+        obstacleManager.CreateObstacle(asteroidSize, position, true);
+        
+        obstacleManager.CreateObstacle(asteroidSize, position, true);
     }
     
     private void EndGame()

@@ -7,7 +7,7 @@ namespace Obstacles
         private SpriteRenderer _renderer;
         public const int MaximumAsteroidSize = 2;
         private const int DamageFactor = 1;
-        [Range(0, MaximumAsteroidSize)] 
+        [HideInInspector][Range(0, MaximumAsteroidSize)] 
         public int asteroidSize;
 
         private void Awake()
@@ -22,32 +22,29 @@ namespace Obstacles
 
         private void OnTriggerEnter2D(Collider2D other)
         {
-            if (other.tag == "PlayerManager")
+            if (other.CompareTag("Player"))
             {
                 GameManager.Instance.PlayerDamaged(DamageFactor);
             }
         
-            if (other.tag == "Bullet")
+            if (other.CompareTag("Bullet"))
             {
+                other.transform.parent.gameObject.SetActive(false);
                 Destroy();
             }
         }
 
-        private void Initialise(Sprite sprite)
+        public void OnCreation(int startingAsteroidSize)
         {
-            _renderer.sprite = sprite;
-            _renderer.enabled = true;
+            asteroidSize = startingAsteroidSize;
         }
+    
 
         private void Destroy()
         {
-            if (asteroidSize == 0)
-            {
-                _renderer.enabled = false;
-                gameObject.SetActive(false);
-                return;
-            }
-            GameManager.Instance.CreateNewAsteroidFromOld(asteroidSize, transform);
+            transform.parent.gameObject.SetActive(false);
+            asteroidSize--;
+            GameManager.Instance.OnLargerObstacleDestruction(asteroidSize, transform);
         }
     }
 }

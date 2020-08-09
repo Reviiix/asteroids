@@ -24,6 +24,11 @@ namespace Statistics
             _timeText = GameManager.Instance.userInterfaceManager.timeText;
         }
 
+        private void OnDisable()
+        {
+            StopTimer();
+        }
+
         public void StartTimer()
         {
             _trackTime = true;
