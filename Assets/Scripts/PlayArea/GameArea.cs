@@ -21,7 +21,7 @@ namespace PlayArea
             {
                 StartCoroutine(GameManager.Wait(TimeAfterExitTillObjectDisabled, () =>
                 {
-                    other.gameObject.SetActive(false);
+                    other.transform.parent.gameObject.SetActive(false);
                 }));
                 return;
             }

@@ -54,7 +54,7 @@ public static class JobSystem
     }
         
     [BurstCompile]
-    public struct MoveMultipleObjectsTowardsPosition : IJobParallelFor
+    private struct MoveMultipleObjectsTowardsPosition : IJobParallelFor
     {
         public NativeArray<float3> positionsOfObjectsToMove;
         public NativeArray<float3> positionOfObjectToMoveTowards;

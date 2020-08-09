@@ -48,15 +48,24 @@ namespace Obstacles
         {
             yield return WaitTimeBetweenSpawningObstacles;
             CreateObstacle(Random.Range(0, Obstacle.MaximumAsteroidSize), obstacleSpawnPositions[Random.Range(0, obstacleSpawnPositions.Length)]);
+            StartCreatObstacleSequence();
         }
     
-        public static void CreateObstacle(int asteroidSize, Transform spawnPosition)
+        public static void CreateObstacle(int asteroidSize, Transform spawnPosition, bool rotate  =false)
         {
             GameManager.DisplayDebugMessage("Asteroid created. Size: " + asteroidSize + ". Location: " + spawnPosition);
-            ObjectPooling.ReturnObjectFromPool(ObjectPoolIndex, spawnPosition.position, spawnPosition.rotation);
+            var v = ObjectPooling.ReturnObjectFromPool(ObjectPoolIndex, spawnPosition.position, spawnPosition.rotation);
+            
+            
+            
+            v.GetComponentInChildren<Obstacle>().OnCreation(v.GetComponentInChildren<SpriteRenderer>().sprite);
+
+            if (rotate)
+            {
+                v.transform.rotation = Quaternion.Euler(Random.Range(0, 360), -90,-90);
+            }
         }
         
-        //Uses Job System. //Requires a lot of boiler plate code but is the most optimised development strategy in Unity.
         public static void MoveObstacles()
         {
             JobSystem.MoveObjectsForward(Obstacles.ToArray(), ObstacleMovementSpeed);
