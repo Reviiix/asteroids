@@ -13,9 +13,11 @@ namespace Obstacles
         private const float ObstacleMovementSpeed = 1f;
         [SerializeField]
         private Transform[] obstacleSpawnPositions;
+        [SerializeField]
+        private Sprite[] obstacleSprites;
         private const int ObjectPoolIndex = 2;
         private static Coroutine _obstacleCreationSequence;
-        private const int TimeBetweenSpawningObstacles = 1;
+        private const int TimeBetweenSpawningObstacles = 5;
         private static readonly WaitForSeconds WaitTimeBetweenSpawningObstacles = new WaitForSeconds(TimeBetweenSpawningObstacles);
 
         private void OnDisable()
@@ -47,25 +49,45 @@ namespace Obstacles
         private IEnumerator CreatObstacles()
         {
             yield return WaitTimeBetweenSpawningObstacles;
-            CreateObstacle(Random.Range(0, Obstacle.MaximumAsteroidSize), obstacleSpawnPositions[Random.Range(0, obstacleSpawnPositions.Length)]);
+            CreateObstacle(Obstacle.MaximumAsteroidSize, obstacleSpawnPositions[Random.Range(0, obstacleSpawnPositions.Length)]);
             StartCreatObstacleSequence();
         }
     
-        public static void CreateObstacle(int asteroidSize, Transform spawnPosition, bool rotate  =false)
+        public void CreateObstacle(int asteroidSize, Transform spawnPosition, bool rotate  =false)
         {
             GameManager.DisplayDebugMessage("Asteroid created. Size: " + asteroidSize + ". Location: " + spawnPosition);
             var v = ObjectPooling.ReturnObjectFromPool(ObjectPoolIndex, spawnPosition.position, spawnPosition.rotation);
+
+            SetSize(asteroidSize, v);
             
-            
-            
-            v.GetComponentInChildren<Obstacle>().OnCreation(v.GetComponentInChildren<SpriteRenderer>().sprite);
+            v.GetComponentInChildren<Obstacle>().OnCreation(asteroidSize);
 
             if (rotate)
             {
                 v.transform.rotation = Quaternion.Euler(Random.Range(0, 360), -90,-90);
             }
         }
-        
+
+        private void SetSize(int newSize, GameObject gameObjectToReSize)
+        {
+            switch (newSize)
+            {
+                case 0:
+                    gameObjectToReSize.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
+                    break;
+                case 1:
+                    gameObjectToReSize.transform.localScale = new Vector3(1, 1, 1);
+                    break;
+                case 2:
+                    gameObjectToReSize.transform.localScale = new Vector3(2, 2, 2);
+                    break;
+                default:
+                    Debug.LogError("That is not an acceptable asteroid size. A size of 0 has been set");
+                    SetSize(0, gameObjectToReSize);
+                    break;
+            }
+        }
+
         public static void MoveObstacles()
         {
             JobSystem.MoveObjectsForward(Obstacles.ToArray(), ObstacleMovementSpeed);

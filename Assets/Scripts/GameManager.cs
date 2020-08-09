@@ -74,11 +74,11 @@ public class GameManager : MonoBehaviour
         DisplayDebugMessage("PlayerManager received " + damage + "damage.");
     }
 
-    public static void OnLargerObstacleDestruction(int asteroidSize, Transform position)
+    public void OnLargerObstacleDestruction(int asteroidSize, Transform position)
     {
-        ObstacleManager.CreateObstacle(asteroidSize, position, true);
+        obstacleManager.CreateObstacle(asteroidSize, position, true);
         
-        ObstacleManager.CreateObstacle(asteroidSize, position, true);
+        obstacleManager.CreateObstacle(asteroidSize, position, true);
     }
     
     private void EndGame()
