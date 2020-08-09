@@ -21,7 +21,7 @@ namespace Shooting
         }
         #endregion Bullet Speed
 
-        public static void InitialiseBulletList()
+        public static void Initialise()
         {
             for (var i = 0; i < ObjectPooling.PoolDictionary[ObjectPoolIndex].Count; i++)
             {

@@ -41,14 +41,14 @@ namespace Obstacles
 
         public void StartCreatObstacleSequence()
         {
-            _obstacleCreationSequence = GameManager.Instance.StartCoroutine(CreatObstacles());
+            _obstacleCreationSequence = GameManager.instance.StartCoroutine(CreatObstacles());
         }
     
         public void StopCreatObstacleSequence()
         {
             if (_obstacleCreationSequence != null)
             {
-                GameManager.Instance.StopCoroutine(_obstacleCreationSequence);
+                GameManager.instance.StopCoroutine(_obstacleCreationSequence);
             }
         }
 

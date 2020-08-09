@@ -3,6 +3,6 @@
     public static void PauseGamePlay(bool state = true)
     {
         GameManager.EnablePlayerConstraints(state);
-        GameManager.Instance.userInterfaceManager.EnablePauseCanvas(state);
+        GameManager.instance.userInterfaceManager.EnablePauseCanvas(state);
     }
 }

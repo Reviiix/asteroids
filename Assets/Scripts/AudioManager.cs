@@ -22,7 +22,7 @@ public class AudioManager
     //This avoids having to use a getcomponent on the object every time you want to play a sound.
     private static void CreateHashSetOfAudioSourcesFromPools()
     {
-        for (var i = 0; i < GameManager.Instance.objectPools.pools[AudioSourcePoolIndex].maximumActiveObjects; i++)
+        for (var i = 0; i < GameManager.instance.objectPools.pools[AudioSourcePoolIndex].maximumActiveObjects; i++)
         {
             AudioSources.Add(ObjectPooling.ReturnObjectFromPool(0, AudioSourceStartingLocation, Quaternion.identity).GetComponent<AudioSource>());
         }

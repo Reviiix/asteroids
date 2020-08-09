@@ -35,7 +35,7 @@ public class UserInterfaceManager : MonoBehaviour
 
     private void InitialiseVariables()
     {
-        startButton.onClick.AddListener(()=>GameManager.Instance.StartGamePlay());
+        startButton.onClick.AddListener(()=>GameManager.instance.StartGamePlay());
         startButton.onClick.AddListener(()=>EnableStartCanvas(false));
     }
 

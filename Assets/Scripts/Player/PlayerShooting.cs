@@ -32,7 +32,7 @@ namespace Player
             
             canShoot = false;
             
-            GameManager.Instance.StartCoroutine(SpawnBullet());
+            GameManager.instance.StartCoroutine(SpawnBullet());
         }
 
         private static IEnumerator SpawnBullet()

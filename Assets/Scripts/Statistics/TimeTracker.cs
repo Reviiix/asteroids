@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Statistics
 {
-    public class TimeTracker : MonoBehaviour
+    public static class TimeTracker
     {
         private static TMP_Text _timeText;
         private static bool _trackTime;
@@ -14,35 +14,25 @@ namespace Statistics
         private static DateTime _startTime;
         public static TimeSpan finalTime;
 
-        private void Start()
+        public static void Initialise()
         {
-            InitialiseVariables();
+            _timeText = GameManager.instance.userInterfaceManager.timeText;
         }
 
-        private static void InitialiseVariables()
-        {
-            _timeText = GameManager.Instance.userInterfaceManager.timeText;
-        }
-
-        private void OnDisable()
-        {
-            StopTimer();
-        }
-
-        public void StartTimer()
+        public static void StartTimer()
         {
             _trackTime = true;
             _startTime = DateTime.Now;
-            _timeTracker = StartCoroutine(TrackTime(_startTime));
+            _timeTracker = GameManager.instance.StartCoroutine(TrackTime(_startTime));
         }
     
-        public void StopTimer()
+        public static void StopTimer()
         {
             _trackTime = false;
             OnTimerStop(TrackTimeFrom(_startTime));
         }
     
-        private IEnumerator TrackTime(DateTime startingTime)
+        private static IEnumerator TrackTime(DateTime startingTime)
         {
             while (_trackTime)
             {
@@ -56,11 +46,11 @@ namespace Statistics
             }
         }
 
-        private void OnTimerStop(TimeSpan endTime)
+        private static void OnTimerStop(TimeSpan endTime)
         {
             if (_timeTracker != null)
             {
-                StopCoroutine(_timeTracker);
+                GameManager.instance.StopCoroutine(_timeTracker);
             }
             finalTime = endTime;
         }

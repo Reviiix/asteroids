@@ -24,7 +24,7 @@ namespace Obstacles
         {
             if (other.CompareTag("Player"))
             {
-                GameManager.Instance.PlayerDamaged(DamageFactor);
+                GameManager.instance.PlayerDamaged(DamageFactor);
             }
         
             if (other.CompareTag("Bullet"))
@@ -38,13 +38,13 @@ namespace Obstacles
         {
             asteroidSize = startingAsteroidSize;
         }
-    
-
+        
         private void Destroy()
         {
-            transform.parent.gameObject.SetActive(false);
             asteroidSize--;
-            GameManager.Instance.OnLargerObstacleDestruction(asteroidSize, transform);
+            var trans = transform;
+            trans.parent.gameObject.SetActive(false);
+            GameManager.instance.OnLargerObstacleDestruction(asteroidSize, trans);
         }
     }
 }
