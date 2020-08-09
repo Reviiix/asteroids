@@ -35,7 +35,7 @@ public class GameManager : MonoBehaviour
     {
         playerManager.PlayerStart();
         BulletManager.InitialiseBulletList();
-        ObstacleManager.InitialiseObstacleList();
+        ObstacleManager.Initialise();
     }
     
     private void InitialiseVariables()
@@ -67,7 +67,7 @@ public class GameManager : MonoBehaviour
         {
             if (dead)
             {
-                EndGame();
+                //EndGame();
             }
         });
         
@@ -76,6 +76,10 @@ public class GameManager : MonoBehaviour
 
     public void OnLargerObstacleDestruction(int asteroidSize, Transform position)
     {
+        if (asteroidSize < 0) return;
+        
+        ScoreManager.
+        
         obstacleManager.CreateObstacle(asteroidSize, position, true);
         
         obstacleManager.CreateObstacle(asteroidSize, position, true);

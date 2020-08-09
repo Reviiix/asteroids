@@ -15,17 +15,23 @@ namespace Obstacles
         private Transform[] obstacleSpawnPositions;
         [SerializeField]
         private Sprite[] obstacleSprites;
+        private readonly Vector3[] obstacleSizes = {new Vector3(0.1f, 0.1f, 0.1f), new Vector3(0.5f, 0.5f, 0.5f), new Vector3(1f, 1f, 1f)};
         private const int ObjectPoolIndex = 2;
         private static Coroutine _obstacleCreationSequence;
-        private const int TimeBetweenSpawningObstacles = 5;
-        private static readonly WaitForSeconds WaitTimeBetweenSpawningObstacles = new WaitForSeconds(TimeBetweenSpawningObstacles);
+        #region Time Between Obstacles
+        private const int MinimumTimeBetweenSpawningObstacles = 1;
+        private const int MaximumTimeBetweenSpawningObstacles = 5;
+        private static float TimeBetweenSpawningObstacles => Random.Range( MinimumTimeBetweenSpawningObstacles, MaximumTimeBetweenSpawningObstacles);
+        private static WaitForSeconds _waitTimeBetweenSpawningObstacles;
+        #endregion Time Between Obstacles
 
-        private void OnDisable()
+        public static void Initialise()
         {
-            StopCreatObstacleSequence();
+            _waitTimeBetweenSpawningObstacles = new WaitForSeconds(TimeBetweenSpawningObstacles);
+            InitialiseObstacleList();
         }
         
-        public static void InitialiseObstacleList()
+        private static void InitialiseObstacleList()
         {
             for (var i = 0; i < ObjectPooling.PoolDictionary[ObjectPoolIndex].Count; i++)
             {
@@ -48,7 +54,7 @@ namespace Obstacles
 
         private IEnumerator CreatObstacles()
         {
-            yield return WaitTimeBetweenSpawningObstacles;
+            yield return _waitTimeBetweenSpawningObstacles;
             CreateObstacle(Obstacle.MaximumAsteroidSize, obstacleSpawnPositions[Random.Range(0, obstacleSpawnPositions.Length)]);
             StartCreatObstacleSequence();
         }
@@ -58,7 +64,7 @@ namespace Obstacles
             GameManager.DisplayDebugMessage("Asteroid created. Size: " + asteroidSize + ". Location: " + spawnPosition);
             var v = ObjectPooling.ReturnObjectFromPool(ObjectPoolIndex, spawnPosition.position, spawnPosition.rotation);
 
-            SetSize(asteroidSize, v);
+            v.transform.localScale = obstacleSizes[asteroidSize];
             
             v.GetComponentInChildren<Obstacle>().OnCreation(asteroidSize);
 
@@ -79,7 +85,7 @@ namespace Obstacles
                     gameObjectToReSize.transform.localScale = new Vector3(1, 1, 1);
                     break;
                 case 2:
-                    gameObjectToReSize.transform.localScale = new Vector3(2, 2, 2);
+                    gameObjectToReSize.transform.localScale = new Vector3(1, 1, 1);
                     break;
                 default:
                     Debug.LogError("That is not an acceptable asteroid size. A size of 0 has been set");

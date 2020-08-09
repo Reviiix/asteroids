@@ -51,6 +51,11 @@ public class UserInterfaceManager : MonoBehaviour
             life.enabled = increase;
         }
     }
+
+    public void UpdateScoreDisplay()
+    {
+        
+    }
     
     private void EnableStartCanvas(bool state = true)
     {

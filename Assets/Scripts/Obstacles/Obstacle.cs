@@ -44,10 +44,7 @@ namespace Obstacles
         {
             transform.parent.gameObject.SetActive(false);
             asteroidSize--;
-            if (asteroidSize >= 0)
-            {
-                GameManager.Instance.OnLargerObstacleDestruction(asteroidSize, transform);
-            }
+            GameManager.Instance.OnLargerObstacleDestruction(asteroidSize, transform);
         }
     }
 }

@@ -23,7 +23,7 @@ public static class JobSystem
             var position = pathRay.GetPoint(1);
             positionsToMoveTo[i]= new float3(position.x, position.y, 0);
 
-            Debug.DrawRay(pathRay.origin, pathRay.direction, Color.green);
+            //Debug.DrawRay(pathRay.origin, pathRay.direction, Color.green);
         }
 
         //Create job handle and pass in variables.
