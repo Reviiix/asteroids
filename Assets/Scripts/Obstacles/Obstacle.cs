@@ -22,12 +22,12 @@ namespace Obstacles
 
         private void OnTriggerEnter2D(Collider2D other)
         {
-            if (other.tag == "PlayerManager")
+            if (other.CompareTag("Player"))
             {
                 GameManager.Instance.PlayerDamaged(DamageFactor);
             }
         
-            if (other.tag == "Bullet")
+            if (other.CompareTag("Bullet"))
             {
                 Destroy();
             }
@@ -47,7 +47,7 @@ namespace Obstacles
                 gameObject.SetActive(false);
                 return;
             }
-            GameManager.Instance.CreateNewAsteroidFromOld(asteroidSize, transform);
+            GameManager.CreateNewAsteroidFromOld(asteroidSize, transform);
         }
     }
 }

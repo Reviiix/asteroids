@@ -2,7 +2,7 @@
 
 namespace PlayArea
 {
-    public class GameAreaTransporter 
+    public static class GameAreaTransporter 
     {
         public static void MoveToScreenEdge(Transform player, ScreenEdge edge)
         {
