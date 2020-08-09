@@ -28,6 +28,12 @@ public class GameManager : MonoBehaviour
     
     private void Start()
     {
+        InitialisePlaneOldCSharpClasses();
+    }
+
+    private void InitialisePlaneOldCSharpClasses()
+    {
+        userInterfaceManager.Initialise();
         playerManager.PlayerInitialise();
         BulletManager.Initialise();
         ObstacleManager.Initialise();
@@ -64,7 +70,7 @@ public class GameManager : MonoBehaviour
         {
             if (dead)
             {
-                //EndGame();
+                EndGame();
             }
         });
         
@@ -84,9 +90,11 @@ public class GameManager : MonoBehaviour
     
     private void EndGame()
     {
-        obstacleManager.StopCreatObstacleSequence();
         TimeTracker.StopTimer();
-        
+        EnablePlayerConstraints(true);
+        obstacleManager.StopCreatObstacleSequence();
+        HighSores.SetHighScore(ScoreTracker.score);
+        userInterfaceManager.EnableGameOverCanvas();
         DisplayDebugMessage("Game over");
     }
     
@@ -123,7 +131,7 @@ namespace Player
     public class PlayerManager
     {
         public Transform playerTransform;
-        public Health health;
+        public Health playerHealth;
         public PlayerMovement playerMovement;
         public PlayerShooting playerShooting;
 
@@ -135,7 +143,7 @@ namespace Player
 
         public void PlayerUpdate()
         {
-            playerMovement.PlayerMovementManagerUpdate();
+            playerMovement.PlayerMovementUpdate();
             playerShooting.PlayerShootUpdate();
         }
     }

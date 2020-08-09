@@ -27,7 +27,7 @@ public static class JobSystem
         }
 
         //Create job handle and pass in variables.
-        var shootJobHandle = new JobSystem.MoveMultipleObjectsTowardsPosition
+        var shootJobHandle = new MoveMultipleObjectsTowardsPosition
         {
             deltaTime = Time.deltaTime,
             positionsOfObjectsToMove = objectPositions,

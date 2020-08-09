@@ -30,7 +30,7 @@ namespace Player
             _camerasDistanceFromGame = -_mainCamera.transform.position.z;
         }
 
-        public void PlayerMovementManagerUpdate()
+        public void PlayerMovementUpdate()
         {
             if (_canRotate)
             {

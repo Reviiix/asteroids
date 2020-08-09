@@ -4,21 +4,10 @@ namespace Obstacles
 {
     public class Obstacle : MonoBehaviour
     {
-        private SpriteRenderer _renderer;
         public const int MaximumAsteroidSize = 2;
         private const int DamageFactor = 1;
         [HideInInspector][Range(0, MaximumAsteroidSize)] 
         public int asteroidSize;
-
-        private void Awake()
-        {
-            InitialiseVariables();
-        }
-
-        private void InitialiseVariables()
-        {
-            _renderer = GetComponent<SpriteRenderer>();
-        }
 
         private void OnTriggerEnter2D(Collider2D other)
         {
