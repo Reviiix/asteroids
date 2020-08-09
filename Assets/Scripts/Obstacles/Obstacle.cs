@@ -14,12 +14,18 @@ namespace Obstacles
             if (other.CompareTag("Player"))
             {
                 GameManager.instance.PlayerDamaged(DamageFactor);
+                other.GetComponent<BoxCollider2D>().enabled = false;
             }
         
             if (other.CompareTag("Bullet"))
             {
                 other.transform.parent.gameObject.SetActive(false);
                 Destroy();
+            }
+            
+            if (other.CompareTag("Obstacle"))
+            {
+                transform.parent.rotation = Quaternion.Euler(UnityEngine.Random.Range(0, 360), -90,-90);
             }
         }
 

@@ -12,13 +12,13 @@ public class GameManager : MonoBehaviour
     public static GameManager instance;
     private const bool ShowDebugMessages = true;
     [SerializeField]
-    private AudioManager audioManager;
-    public Camera mainCamera;
-    public ObjectPooling objectPools;
-    [SerializeField]
     private PlayerManager playerManager;
     [SerializeField]
     private ObstacleManager obstacleManager;
+    [SerializeField]
+    private AudioManager audioManager;
+    public Camera mainCamera;
+    public ObjectPooling objectPools;
     public UserInterfaceManager userInterfaceManager;
 
     private void Awake()
@@ -39,6 +39,7 @@ public class GameManager : MonoBehaviour
         ObstacleManager.Initialise();
         TimeTracker.Initialise();
         ScoreTracker.Initialise();
+        ShakeObject.Initialise();
     }
     
     private void InitialiseVariables()
@@ -63,8 +64,10 @@ public class GameManager : MonoBehaviour
         DisplayDebugMessage("Game play started.");
     }
 
+    [ContextMenu("Player Damaged")]
     public void PlayerDamaged(int damage)
     {
+        ShakeObject.Shake(ReturnPlayer());
         userInterfaceManager.UpdateLivesDisplay(false);
         Health.TakeDamage(damage, delegate(bool dead)
         {
@@ -88,6 +91,7 @@ public class GameManager : MonoBehaviour
         obstacleManager.CreateObstacle(asteroidSize, position, true);
     }
     
+    [ContextMenu("End Game Play")]
     private void EndGame()
     {
         TimeTracker.StopTimer();

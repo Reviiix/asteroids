@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System;
+using Player;
+using UnityEngine;
 
 namespace PlayArea
 {
@@ -6,17 +8,19 @@ namespace PlayArea
     {
         public static void MoveToScreenEdge(Transform player, ScreenEdge edge)
         {
+            if (ShakeObject._shaking) return;
+            
             var position = player.position;
             switch (edge)
             {
                 case ScreenEdge.Top:
                 case ScreenEdge.Bottom:
-                    position  = new UnityEngine.Vector3(position.x, -position.y, position.z);
+                    position  = new Vector3(position.x, -position.y, position.z);
                     player.position = position;
                     break;
                 case ScreenEdge.Left:
                 case ScreenEdge.Right:
-                    position  = new UnityEngine.Vector3(-position.x, position.y, position.z);
+                    position  = new Vector3(-position.x, position.y, position.z);
                     player.position = position;
                     break;
                 default:
