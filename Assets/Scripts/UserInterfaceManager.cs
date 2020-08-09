@@ -27,6 +27,7 @@ public class UserInterfaceManager
     public TMP_Text finalScoreText;
     public TMP_Text highScoreText;
     private const string HighScorePrefix = "HIGHSCORE: ";
+    private static readonly Color HighScoreColour = Color.blue;
     
     
     public void Initialise()
@@ -50,8 +51,8 @@ public class UserInterfaceManager
             {
                 continue;
             }
-
             lifeDepletedImage.enabled = !increase;
+            return;
         }
     }
 
@@ -61,8 +62,6 @@ public class UserInterfaceManager
         startCanvas.enabled = state;
         startButton.GetComponent<SequentiallyChangeTextColour>().enabled = state;
     }
-    
-    private static readonly Color HighScoreColour = Color.blue;
 
     public void EnableGameOverCanvas()
     {
@@ -100,5 +99,4 @@ public class UserInterfaceManager
         gameOverCanvas.enabled = state;
         pauseCanvas.enabled = state;
     }
-
 }
