@@ -47,9 +47,9 @@ public class UserInterfaceManager
 
     private void AddButtonClickNoise()
     {
-        startButton.onClick.AddListener(GameManager.instance.audioManager.PlayButtonClick);
-        restartButton.onClick.AddListener(GameManager.instance.audioManager.PlayButtonClick);
-        pauseButton.onClick.AddListener(GameManager.instance.audioManager.PlayButtonClick);
+        startButton.onClick.AddListener(GameManager.instance.audioManager.PlayButtonClickSound);
+        restartButton.onClick.AddListener(GameManager.instance.audioManager.PlayButtonClickSound);
+        pauseButton.onClick.AddListener(GameManager.instance.audioManager.PlayButtonClickSound);
     }
 
     public void UpdateLivesDisplay(bool increase)

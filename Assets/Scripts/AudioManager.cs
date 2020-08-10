@@ -10,16 +10,15 @@ public class AudioManager
     private const int AudioSourcePoolIndex = 0;
     private static readonly HashSet<AudioSource> AudioSources = new HashSet<AudioSource>(); //Definately udse a hashset?
     [SerializeField]
+    public AudioClip backgroundMusic;
+    [SerializeField]
     public AudioClip buttonClick;
     [SerializeField]
     public AudioClip shooting;
+    [SerializeField]
+    public AudioClip destruction;
 
-    private void Start()
-    {
-        CreateHashSetOfAudioSourcesFromPools();
-    }
-    
-    private static void CreateHashSetOfAudioSourcesFromPools()
+    public static void CreateHashSetOfAudioSourcesFromPools()
     {
         for (var i = 0; i < GameManager.instance.objectPools.pools[AudioSourcePoolIndex].maximumActiveObjects; i++)
         {
@@ -27,7 +26,17 @@ public class AudioManager
         }
     }
 
-    public void PlayButtonClick()
+    public void PlayGunShotSound()
+    {
+        PlayClip(shooting);
+    }
+    
+    public void PlayDestructionSound()
+    {
+        PlayClip(destruction);
+    }
+    
+    public void PlayButtonClickSound()
     {
         PlayClip(buttonClick);
     }
