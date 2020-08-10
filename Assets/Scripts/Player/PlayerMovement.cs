@@ -8,12 +8,12 @@ namespace Player
     {
         private static Camera _mainCamera;
         private static bool _canMove;
-        private static bool _canRotate = true;
+        private static bool _canRotate;
         private const float RotationSpeed = 10;
         public const float MovementSpeed = 3;
         #region MousePlayerMinimumDistance
         private static float _camerasDistanceFromGame;
-        private float _mousePlayerMinimumDistance = 0.1f;
+        private float _mousePlayerMinimumDistance = 0.01f;
         private float MousePlayerMinimumDistance
         {
             get => _mousePlayerMinimumDistance + _camerasDistanceFromGame;

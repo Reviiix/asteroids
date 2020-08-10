@@ -26,7 +26,7 @@ public class UserInterfaceManager
     public TMP_Text finalTimeText;
     public TMP_Text finalScoreText;
     public TMP_Text highScoreText;
-    private const string HighScorePrefix = "HIGHSCORE: ";
+    private const string HighScorePrefix = "<u>HIGHSCORE: </u>";
     private static readonly Color HighScoreColour = Color.blue;
     public Button restartButton;
     
@@ -47,9 +47,9 @@ public class UserInterfaceManager
 
     private void AddButtonClickNoise()
     {
-        startButton.onClick.AddListener(GameManager.instance.audioManager.PlayButtonClick);
-        restartButton.onClick.AddListener(GameManager.instance.audioManager.PlayButtonClick);
-        pauseButton.onClick.AddListener(GameManager.instance.audioManager.PlayButtonClick);
+        startButton.onClick.AddListener(GameManager.instance.audioManager.PlayButtonClickSound);
+        restartButton.onClick.AddListener(GameManager.instance.audioManager.PlayButtonClickSound);
+        pauseButton.onClick.AddListener(GameManager.instance.audioManager.PlayButtonClickSound);
     }
 
     public void UpdateLivesDisplay(bool increase)
