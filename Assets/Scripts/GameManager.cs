@@ -66,6 +66,10 @@ public class GameManager : MonoBehaviour
     {
         ScoreTracker.Initialise();
         TimeTracker.Initialise();
+        
+        BulletManager.DestroyAllBullets();
+        ObstacleManager.DestroyAllObstacles();
+        
         RestoreHealth();
         userInterfaceManager.EnableStartCanvas();
     }

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Data;
 using Player;
 using UnityEngine;
 
@@ -32,6 +33,14 @@ namespace Shooting
         public static void MoveBullets()
         {
             JobSystem.MoveObjectsForward(Bullets.ToArray(),BulletSpeed);
+        }
+
+        public static void DestroyAllBullets()
+        {
+            foreach (var bullet in Bullets)
+            {
+                bullet.SetActive(false);
+            }
         }
     }
 }
