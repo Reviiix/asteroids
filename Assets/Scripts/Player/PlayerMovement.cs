@@ -1,36 +1,29 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Player
 {
-    [Serializable]
-    public class PlayerMovement
+    public static class PlayerMovement
     {
         private static Camera _mainCamera;
         private static bool _canMove;
         private static bool _canRotate;
         private const float RotationSpeed = 10;
         public const float MovementSpeed = 3;
-        #region MousePlayerMinimumDistance
+        #region MousePlayerActualMinimumDistance
         private static float _camerasDistanceFromGame;
-        private float _mousePlayerMinimumDistance = 0.01f;
-        private float MousePlayerMinimumDistance
-        {
-            get => _mousePlayerMinimumDistance + _camerasDistanceFromGame;
-            set => _mousePlayerMinimumDistance = value;
-        }
-        #endregion MousePlayerMinimumDistance
-        private Transform _player;
+        private const float MousePlayerMinimumDistance = 0.01f;
+        private static float MousePlayerActualMinimumDistance => MousePlayerMinimumDistance + _camerasDistanceFromGame;
+        #endregion MousePlayerActualMinimumDistance
+        private static Transform _player;
         
-
-        public void Initialise()
+        public static void Initialise()
         {
             _player = GameManager.ReturnPlayer();
             _mainCamera = GameManager.instance.mainCamera;
             _camerasDistanceFromGame = -_mainCamera.transform.position.z;
         }
 
-        public void PlayerMovementUpdate()
+        public static void PlayerMovementUpdate()
         {
             if (_canRotate)
             {
@@ -38,7 +31,7 @@ namespace Player
             }
             if (_canMove)
             {
-                MoveObjectTowardsPointer(_mainCamera, _player, MovementSpeed, MousePlayerMinimumDistance);
+                MoveObjectTowardsPointer(_mainCamera, _player, MovementSpeed, MousePlayerActualMinimumDistance);
             }
         }
 

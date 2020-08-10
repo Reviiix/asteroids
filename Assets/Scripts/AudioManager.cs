@@ -15,6 +15,8 @@ public class AudioManager
     public AudioClip shooting;
     [SerializeField]
     public AudioClip destruction;
+    [SerializeField]
+    public AudioClip damage;
 
     public void PlayGunShotSound()
     {
@@ -24,6 +26,11 @@ public class AudioManager
     public void PlayDestructionSound()
     {
         PlayClip(destruction);
+    }
+    
+    public void PlayDamageSound()
+    {
+        PlayClip(damage);
     }
     
     public void PlayButtonClickSound()
@@ -60,6 +67,11 @@ public class AudioManager
 
         Debug.LogWarning("There are not enough audio sources to play that many sounds at once, please set a higher maximum amount in the object pool. The first or default audio source has been returned and may have cut of sounds unexpectedly.");
         return AudioSources.FirstOrDefault();
+    }
+
+    public static void SetGlobalVolume(float volume)
+    {
+        AudioListener.volume = volume;
     }
     
 }
