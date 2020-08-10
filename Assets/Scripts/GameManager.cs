@@ -6,7 +6,6 @@ using UnityEngine;
 using System;
 using System.Collections;
 using Shooting;
-using UnityEngine.SceneManagement;
 
 
 public class GameManager : MonoBehaviour
@@ -35,6 +34,11 @@ public class GameManager : MonoBehaviour
         InitialisePlaneOldCSharpClasses();
     }
 
+    private void OnDisable()
+    {
+        StopAllCoroutines();
+    }
+
     private void InitialisePlaneOldCSharpClasses()
     {
         userInterfaceManager.Initialise();
@@ -53,19 +57,26 @@ public class GameManager : MonoBehaviour
     
     private void Update()
     {
-        //One central update is better than multiple. Slight performance increase and easier to trace bugs.
         playerManager.PlayerUpdate();
         BulletManager.MoveBullets();
         ObstacleManager.MoveObstacles();
     }
 
-
     public void ReloadGame()
     {
         ScoreTracker.Initialise();
         TimeTracker.Initialise();
-        
-        userInterfaceManager.EnableStartCanvas(true);
+        RestoreHealth();
+        userInterfaceManager.EnableStartCanvas();
+    }
+
+    private void RestoreHealth()
+    {
+        playerManager.playerHealth.RestoreHealth();
+        for (var i = 0; i <= Health.MaxHealth; i++)
+        {
+            userInterfaceManager.UpdateLivesDisplay(true);
+        }
     }
 
     public void StartGamePlay()

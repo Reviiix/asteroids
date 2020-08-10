@@ -1,7 +1,4 @@
-﻿using System;
-using Obstacles;
-using Player;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace PlayArea
 {
@@ -32,6 +29,7 @@ namespace PlayArea
         public static void PlaceObjectInCentre(Transform transformToMove)
         {
             transformToMove.position = Vector3.zero;
+            transformToMove.rotation = Quaternion.Euler(Vector3.zero);
         }
     }
 }

@@ -6,14 +6,14 @@ namespace Player
     [Serializable]
     public class Health
     {
-        private const int MaxHealth = 3;
+        public const int MaxHealth = 2;
         [Range(0,MaxHealth)]
         private static int _health = MaxHealth;
 
         public static void TakeDamage(int damage, Action<bool> dead)
         {
             _health -= damage;
-            if (_health == 0)
+            if (_health < 0)
             {
                 dead(true);
                 return;
@@ -21,5 +21,11 @@ namespace Player
 
             dead(false);
         }
+
+        public void RestoreHealth()
+        {
+            _health = MaxHealth;
+        }
+
     }
 }

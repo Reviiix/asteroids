@@ -13,7 +13,7 @@ namespace Obstacles
         private const float ObstacleMovementSpeed = 1f;
         [SerializeField]
         private Transform[] obstacleSpawnPositions;
-        private readonly Vector3[] obstacleSizes = {new Vector3(0.5f, 0.5f, 0.5f), new Vector3(1f, 1f, 1f), new Vector3(1f, 1f, 1f)};
+        private readonly Vector3[] obstacleSizes = {new Vector3(0.5f, 0.5f, 0.5f), new Vector3(1f, 1f, 1f), new Vector3(1.5f, 1.5f, 1.5f)};
         private const int ObjectPoolIndex = 2;
         private static Coroutine _obstacleCreationSequence;
         #region Time Between Obstacles
@@ -60,15 +60,15 @@ namespace Obstacles
         public void CreateObstacle(int asteroidSize, Transform spawnPosition, bool rotate  =false)
         {
             GameManager.DisplayDebugMessage("Asteroid created. Size: " + asteroidSize + ". Location: " + spawnPosition);
-            var v = ObjectPooling.ReturnObjectFromPool(ObjectPoolIndex, spawnPosition.position, spawnPosition.rotation);
+            var obstacle = ObjectPooling.ReturnObjectFromPool(ObjectPoolIndex, spawnPosition.position, spawnPosition.rotation);
 
-            v.transform.localScale = obstacleSizes[asteroidSize];
+            obstacle.transform.localScale = obstacleSizes[asteroidSize];
             
-            v.GetComponentInChildren<Obstacle>().OnCreation(asteroidSize);
+            obstacle.GetComponentInChildren<Obstacle>().OnCreation(asteroidSize);
 
             if (rotate)
             {
-                v.transform.rotation = Quaternion.Euler(Random.Range(0, 360), -90,-90);
+                obstacle.transform.rotation = Quaternion.Euler(Random.Range(0, 360), -90,-90);
             }
         }
 

@@ -1,10 +1,10 @@
 ﻿public static class PauseManager
 {
-    private static bool isPaused = false;
+    private static bool _isPaused = false;
     public static void PauseGamePlay()
     {
-        isPaused = !isPaused;
-        GameManager.EnablePlayerConstraints(isPaused);
-        GameManager.instance.userInterfaceManager.EnablePauseCanvas(isPaused);
+        _isPaused = !_isPaused;
+        GameManager.EnablePlayerConstraints(_isPaused);
+        GameManager.instance.userInterfaceManager.EnablePauseCanvas(_isPaused);
     }
 }
