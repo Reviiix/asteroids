@@ -10,7 +10,7 @@ namespace Statistics
         private static TMP_Text _timeText;
         private static bool _trackTime;
         private static Coroutine _timeTracker;
-        private const string TimeDisplayPrefix = "TIME: ";
+        private const string TimeDisplayPrefix = "<u>TIME:</u> ";
         private static DateTime _startTime;
 
         public static void Initialise()
