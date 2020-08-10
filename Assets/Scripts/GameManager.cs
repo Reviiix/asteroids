@@ -9,6 +9,7 @@ using Shooting;
 
 public class GameManager : MonoBehaviour
 {
+    public const Difficulty GameDifficulty = Difficulty.Hard;
     private const bool ShowDebugMessages = true;
     public static GameManager instance;
     public PlayerManagerffff playerManagerffff;
@@ -96,6 +97,7 @@ public class GameManager : MonoBehaviour
         }
         GameArea.CreateDestructionParticle(ReturnPlayer().position);
         audioManager.PlayDestructionSound();
+        audioManager.PlayDamageSound();
         
         userInterfaceManager.UpdateLivesDisplay(false);
         
@@ -170,6 +172,13 @@ public class GameManager : MonoBehaviour
             Debug.Log(message);
         }
     }
+}
+
+public enum Difficulty
+{
+    Easy  = 1,
+    Medium  = 10,
+    Hard = 100
 }
 
 namespace Player

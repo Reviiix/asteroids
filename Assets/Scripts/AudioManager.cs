@@ -15,6 +15,8 @@ public class AudioManager
     public AudioClip shooting;
     [SerializeField]
     public AudioClip destruction;
+    [SerializeField]
+    public AudioClip damage;
 
     public void PlayGunShotSound()
     {
@@ -24,6 +26,11 @@ public class AudioManager
     public void PlayDestructionSound()
     {
         PlayClip(destruction);
+    }
+    
+    public void PlayDamageSound()
+    {
+        PlayClip(damage);
     }
     
     public void PlayButtonClickSound()
