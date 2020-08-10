@@ -96,7 +96,7 @@ public class GameManager : MonoBehaviour
             return;
         }
         GameArea.CreateDestructionParticle(ReturnPlayer().position);
-        audioManager.PlayDestructionSound();
+        
         audioManager.PlayDamageSound();
         
         userInterfaceManager.UpdateLivesDisplay(false);
