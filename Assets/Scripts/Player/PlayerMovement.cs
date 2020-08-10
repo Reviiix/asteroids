@@ -13,7 +13,7 @@ namespace Player
         public const float MovementSpeed = 3;
         #region MousePlayerMinimumDistance
         private static float _camerasDistanceFromGame;
-        private float _mousePlayerMinimumDistance = 0.1f;
+        private float _mousePlayerMinimumDistance = 0.01f;
         private float MousePlayerMinimumDistance
         {
             get => _mousePlayerMinimumDistance + _camerasDistanceFromGame;

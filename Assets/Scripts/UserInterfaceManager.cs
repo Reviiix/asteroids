@@ -26,7 +26,7 @@ public class UserInterfaceManager
     public TMP_Text finalTimeText;
     public TMP_Text finalScoreText;
     public TMP_Text highScoreText;
-    private const string HighScorePrefix = "HIGHSCORE: ";
+    private const string HighScorePrefix = "<u>HIGHSCORE: </u>";
     private static readonly Color HighScoreColour = Color.blue;
     public Button restartButton;
     
