@@ -12,7 +12,7 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
     private const bool ShowDebugMessages = true;
-    private const int DestructionPrefabPoolIndex = 3;
+    private const int DestructionParticlePrefabPoolIndex = 3;
     private const int SecondsBeforeContinuingGamePlay = 1;
     [SerializeField]
     private PlayerManager playerManager;
@@ -43,6 +43,7 @@ public class GameManager : MonoBehaviour
     {
         userInterfaceManager.Initialise();
         playerManager.PlayerInitialise();
+        AudioManager.CreateHashSetOfAudioSourcesFromPools();
         BulletManager.Initialise();
         ObstacleManager.Initialise();
         TimeTracker.Initialise();
@@ -88,6 +89,7 @@ public class GameManager : MonoBehaviour
         EnablePlayerConstraints(false);
         TimeTracker.StartTimer();
         obstacleManager.StartCreatObstacleSequence();
+        playerManager.playerRenderer.enabled = true;
 
         DisplayDebugMessage("Game play started.");
     }
@@ -99,11 +101,11 @@ public class GameManager : MonoBehaviour
         userInterfaceManager.UpdateLivesDisplay(false);
         Health.TakeDamage(damage, delegate(bool gameOver)
         {
+            audioManager.PlayDestructionSound();
             playerManager.playerRenderer.enabled = false;
             PlayerDeathSequence(() =>
             {
                 GameAreaTransporter.PlaceObjectInCentre(ReturnPlayer());
-                playerManager.playerRenderer.enabled = true;
                 if (gameOver)
                 {
                     EndGame();
@@ -113,6 +115,7 @@ public class GameManager : MonoBehaviour
                     StartCoroutine(Wait(SecondsBeforeContinuingGamePlay, ()=>
                     {
                         EnablePlayerConstraints(false);
+                        playerManager.playerRenderer.enabled = true;
                     }));
                 }
             });
@@ -122,15 +125,16 @@ public class GameManager : MonoBehaviour
 
     private static void PlayerDeathSequence(Action callBack)
     {
-        ObjectPooling.ReturnObjectFromPool(DestructionPrefabPoolIndex, ReturnPlayer().position, Quaternion.identity);
+        ObjectPooling.ReturnObjectFromPool(DestructionParticlePrefabPoolIndex, ReturnPlayer().position, Quaternion.identity);
         instance.StartCoroutine(Wait(SecondsBeforeContinuingGamePlay, callBack));
     }
 
     public void OnObstacleDestruction(int asteroidSize, Transform position)
     {
+        audioManager.PlayDestructionSound();
         if (asteroidSize < 0)
         {
-            ObjectPooling.ReturnObjectFromPool(DestructionPrefabPoolIndex, position.position, Quaternion.identity);
+            ObjectPooling.ReturnObjectFromPool(DestructionParticlePrefabPoolIndex, position.position, Quaternion.identity);
             return;
         }
         
