@@ -6,25 +6,15 @@ using UnityEngine;
 [Serializable]
 public class AudioManager 
 {
-    private static readonly Vector3 AudioSourceStartingLocation = new Vector3(0,0,0);
+    private static readonly Vector3 AudioSourceStartingLocation = Vector3.zero;
     private const int AudioSourcePoolIndex = 0;
-    private static readonly HashSet<AudioSource> AudioSources = new HashSet<AudioSource>(); //Definately udse a hashset?
-    [SerializeField]
-    public AudioClip backgroundMusic;
+    private static readonly HashSet<AudioSource> AudioSources = new HashSet<AudioSource>();
     [SerializeField]
     public AudioClip buttonClick;
     [SerializeField]
     public AudioClip shooting;
     [SerializeField]
     public AudioClip destruction;
-
-    public static void CreateHashSetOfAudioSourcesFromPools()
-    {
-        for (var i = 0; i < GameManager.instance.objectPools.pools[AudioSourcePoolIndex].maximumActiveObjects; i++)
-        {
-            AudioSources.Add(ObjectPooling.ReturnObjectFromPool(0, AudioSourceStartingLocation, Quaternion.identity).GetComponent<AudioSource>());
-        }
-    }
 
     public void PlayGunShotSound()
     {
@@ -39,6 +29,14 @@ public class AudioManager
     public void PlayButtonClickSound()
     {
         PlayClip(buttonClick);
+    }
+    
+    public static void CreateHashSetOfAudioSourcesFromPools()
+    {
+        for (var i = 0; i < GameManager.instance.objectPools.pools[AudioSourcePoolIndex].maximumActiveObjects; i++)
+        {
+            AudioSources.Add(ObjectPooling.ReturnObjectFromPool(0, AudioSourceStartingLocation, Quaternion.identity).GetComponent<AudioSource>());
+        }
     }
 
     public static void PlayClip(AudioClip clip, bool looping = false)

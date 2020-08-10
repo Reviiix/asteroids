@@ -11,7 +11,7 @@ namespace Player
         public static bool canShoot;
         private const int ObjectPoolIndex = BulletManager.ObjectPoolIndex;
         private static Transform _bulletSpawnLocation;
-        private const float TimeBetweenShots = 0.1f;
+        private const float TimeBetweenShots = 0.3f;
         private static readonly WaitForSeconds WaitTimeBetweenShots = new WaitForSeconds(TimeBetweenShots);
 
         public void Initialise()
@@ -37,6 +37,7 @@ namespace Player
 
         private static IEnumerator SpawnBullet()
         {
+            GameManager.instance.audioManager.PlayGunShotSound();
             ObjectPooling.ReturnObjectFromPool(ObjectPoolIndex, _bulletSpawnLocation.position, _bulletSpawnLocation.rotation);
             yield return WaitTimeBetweenShots;
             canShoot = true;
