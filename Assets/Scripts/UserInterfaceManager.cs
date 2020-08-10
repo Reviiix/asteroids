@@ -28,6 +28,7 @@ public class UserInterfaceManager
     public TMP_Text highScoreText;
     private const string HighScorePrefix = "HIGHSCORE: ";
     private static readonly Color HighScoreColour = Color.blue;
+    public Button restartButton;
     
     
     public void Initialise()
@@ -38,9 +39,17 @@ public class UserInterfaceManager
 
     private void InitialiseVariables()
     {
-        startButton.onClick.AddListener(()=>GameManager.instance.StartGamePlay());
         startButton.onClick.AddListener(()=>EnableStartCanvas(false));
-        pauseButton.onClick.AddListener(()=>PauseManager.PauseGamePlay());
+        startButton.onClick.AddListener(GameManager.instance.StartGamePlay);
+        pauseButton.onClick.AddListener(PauseManager.PauseGamePlay);
+        restartButton.onClick.AddListener(GameManager.instance.ReloadGame);
+    }
+
+    private void AddButtonClickNoise()
+    {
+        startButton.onClick.AddListener(GameManager.instance.audioManager.PlayButtonClick);
+        restartButton.onClick.AddListener(GameManager.instance.audioManager.PlayButtonClick);
+        pauseButton.onClick.AddListener(GameManager.instance.audioManager.PlayButtonClick);
     }
 
     public void UpdateLivesDisplay(bool increase)
@@ -56,17 +65,17 @@ public class UserInterfaceManager
         }
     }
 
-    private void EnableStartCanvas(bool state = true)
+    public void EnableStartCanvas(bool state = true)
     {
         EnabledAllNonPermanentCanvases(false);
         startCanvas.enabled = state;
         startButton.GetComponent<SequentiallyChangeTextColour>().enabled = state;
     }
 
-    public void EnableGameOverCanvas()
+    public void EnableGameOverCanvas(bool state = true)
     {
         EnabledAllNonPermanentCanvases(false);
-        gameOverCanvas.enabled = true;
+        gameOverCanvas.enabled = state;
         finalScoreText.text = scoreText.text;
         finalTimeText.text = timeText.text;
         

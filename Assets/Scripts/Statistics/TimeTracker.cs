@@ -16,6 +16,7 @@ namespace Statistics
         public static void Initialise()
         {
             _timeText = GameManager.instance.userInterfaceManager.timeText;
+            _timeText.text = TimeDisplayPrefix + "0:00:00";
         }
 
         public static void StartTimer()
@@ -28,7 +29,7 @@ namespace Statistics
         public static void StopTimer()
         {
             _trackTime = false;
-            OnTimerStop(TrackTimeFrom(_startTime));
+            OnTimerStop();
         }
     
         private static IEnumerator TrackTime(DateTime startingTime)
@@ -37,7 +38,7 @@ namespace Statistics
             {
                 if (_trackTime == false)
                 {
-                    OnTimerStop(TrackTimeFrom(startingTime));
+                    OnTimerStop();
                     yield return null;
                 }
                 UpdateTimeDisplay(_timeText, startingTime);
@@ -45,7 +46,7 @@ namespace Statistics
             }
         }
 
-        private static void OnTimerStop(TimeSpan endTime)
+        private static void OnTimerStop()
         {
             if (_timeTracker != null)
             {

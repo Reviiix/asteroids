@@ -28,9 +28,9 @@ namespace Shooting
                 Bullets.Add(ObjectPooling.ReturnObjectFromPool(ObjectPoolIndex, Vector3.zero, Quaternion.identity,false));
             }
         }
-        
+
         public static void MoveBullets()
-        { 
+        {
             JobSystem.MoveObjectsForward(Bullets.ToArray(),BulletSpeed);
         }
     }

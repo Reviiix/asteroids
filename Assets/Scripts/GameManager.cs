@@ -6,6 +6,7 @@ using UnityEngine;
 using System;
 using System.Collections;
 using Shooting;
+using UnityEngine.SceneManagement;
 
 
 public class GameManager : MonoBehaviour
@@ -18,8 +19,7 @@ public class GameManager : MonoBehaviour
     private PlayerManager playerManager;
     [SerializeField]
     private ObstacleManager obstacleManager;
-    [SerializeField]
-    private AudioManager audioManager;
+    public AudioManager audioManager;
     public Camera mainCamera;
     public ObjectPooling objectPools;
     public UserInterfaceManager userInterfaceManager;
@@ -59,12 +59,21 @@ public class GameManager : MonoBehaviour
         ObstacleManager.MoveObstacles();
     }
 
+
+    public void ReloadGame()
+    {
+        ScoreTracker.Initialise();
+        TimeTracker.Initialise();
+        
+        userInterfaceManager.EnableStartCanvas(true);
+    }
+
     public void StartGamePlay()
     {
         EnablePlayerConstraints(false);
         TimeTracker.StartTimer();
         obstacleManager.StartCreatObstacleSequence();
-        
+
         DisplayDebugMessage("Game play started.");
     }
 
@@ -75,9 +84,11 @@ public class GameManager : MonoBehaviour
         userInterfaceManager.UpdateLivesDisplay(false);
         Health.TakeDamage(damage, delegate(bool gameOver)
         {
+            playerManager.playerRenderer.enabled = false;
             PlayerDeathSequence(() =>
             {
                 GameAreaTransporter.PlaceObjectInCentre(ReturnPlayer());
+                playerManager.playerRenderer.enabled = true;
                 if (gameOver)
                 {
                     EndGame();
@@ -164,6 +175,8 @@ namespace Player
         public Transform playerTransform;
         [HideInInspector]
         public Rigidbody2D playerRigidBody;
+        [HideInInspector]
+        public SpriteRenderer playerRenderer;
         public Health playerHealth;
         public PlayerMovement playerMovement;
         public PlayerShooting playerShooting;
@@ -171,6 +184,7 @@ namespace Player
         public void PlayerInitialise()
         {
             playerRigidBody = playerTransform.GetComponent<Rigidbody2D>();
+            playerRenderer = playerTransform.GetComponent<SpriteRenderer>();
             playerMovement.Initialise();
             playerShooting.Initialise();
         }
