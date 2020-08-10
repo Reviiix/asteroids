@@ -26,11 +26,11 @@ namespace Player
         public void Initialise()
         {
             _player = GameManager.ReturnPlayer();
-            _mainCamera = GameManager.Instance.mainCamera;
+            _mainCamera = GameManager.instance.mainCamera;
             _camerasDistanceFromGame = -_mainCamera.transform.position.z;
         }
 
-        public void PlayerMovementManagerUpdate()
+        public void PlayerMovementUpdate()
         {
             if (_canRotate)
             {
@@ -42,7 +42,7 @@ namespace Player
             }
         }
 
-        public static void EnablePlayerConstraints(bool state)
+        public static void EnablePlayerMovementConstraints(bool state)
         {
             _canMove = !state;
             _canRotate = !state;

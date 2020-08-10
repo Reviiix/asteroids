@@ -1,41 +1,90 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace Obstacles
 {
-    public class ObstacleManager : MonoBehaviour
+    [Serializable]
+    public class ObstacleManager
     {
+        private static readonly List<GameObject> Obstacles = new List<GameObject>();
+        private const float ObstacleMovementSpeed = 3f;
         [SerializeField]
         private Transform[] obstacleSpawnPositions;
-
+        [SerializeField]
+        private Sprite[] obstacleSprites;
+        private readonly Vector3[] obstacleSizes = {new Vector3(0.5f, 0.5f, 0.5f), new Vector3(1f, 1f, 1f), new Vector3(2f, 2f, 2f)};
         private const int ObjectPoolIndex = 2;
         private static Coroutine _obstacleCreationSequence;
-        private const int TimeBetweenSpawningObstacles = 10;
-        private static readonly WaitForSeconds WaitTimeBetweenSpawningObstacles = new WaitForSeconds(TimeBetweenSpawningObstacles);
+        #region Time Between Obstacles
+        private const int MinimumTimeBetweenSpawningObstacles = 1;
+        private const int MaximumTimeBetweenSpawningObstacles = 3;
+        private static float TimeBetweenSpawningObstacles => Random.Range( MinimumTimeBetweenSpawningObstacles, MaximumTimeBetweenSpawningObstacles);
+        private static WaitForSeconds _waitTimeBetweenSpawningObstacles;
+        #endregion Time Between Obstacles
+
+        public static void Initialise()
+        {
+            _waitTimeBetweenSpawningObstacles = new WaitForSeconds(TimeBetweenSpawningObstacles);
+            InitialiseObstacleList();
+        }
+        
+        private static void InitialiseObstacleList()
+        {
+            for (var i = 0; i < ObjectPooling.PoolDictionary[ObjectPoolIndex].Count; i++)
+            {
+                Obstacles.Add(ObjectPooling.ReturnObjectFromPool(ObjectPoolIndex, Vector3.zero, Quaternion.identity,false));
+            }
+        }
 
         public void StartCreatObstacleSequence()
         {
-            _obstacleCreationSequence = StartCoroutine(CreatObstacles());
+            _obstacleCreationSequence = GameManager.instance.StartCoroutine(ContinuouslyCreatObstaclesSequence());
         }
     
         public void StopCreatObstacleSequence()
         {
             if (_obstacleCreationSequence != null)
             {
-                StopCoroutine(_obstacleCreationSequence);
+                GameManager.instance.StopCoroutine(_obstacleCreationSequence);
             }
         }
 
-        private IEnumerator CreatObstacles()
+        private IEnumerator ContinuouslyCreatObstaclesSequence()
         {
-            yield return WaitTimeBetweenSpawningObstacles;
-            CreateObstacle(Random.Range(0, Obstacle.MaximumAsteroidSize), obstacleSpawnPositions[Random.Range(0, obstacleSpawnPositions.Length)]);
+            yield return _waitTimeBetweenSpawningObstacles;
+            CreateObstacle(Obstacle.MaximumAsteroidSize, obstacleSpawnPositions[Random.Range(0, obstacleSpawnPositions.Length)]);
+            StartCreatObstacleSequence();
         }
+
+        private const int TiltFactor = 10;
     
-        public static void CreateObstacle(int asteroidSize, Transform spawnPosition)
+        public void CreateObstacle(int asteroidSize, Transform spawnPosition, bool randomRotate = false)
         {
             GameManager.DisplayDebugMessage("Asteroid created. Size: " + asteroidSize + ". Location: " + spawnPosition);
-            //ObjectPooling.ReturnObjectFromPool(ObjectPoolIndex, spawnPosition.position, Quaternion.identity);
+            
+            var obstacle = ObjectPooling.ReturnObjectFromPool(ObjectPoolIndex, spawnPosition.position, spawnPosition.rotation);
+            obstacle.transform.localScale = obstacleSizes[asteroidSize];
+            obstacle.GetComponentInChildren<Obstacle>().OnCreation(asteroidSize, obstacleSprites[Random.Range(0, obstacleSprites.Length)]);
+            if (randomRotate)
+            {
+                obstacle.transform.rotation = Quaternion.Euler(Random.Range(0, 360), -90,-90);
+            }
+        }
+
+        public static void MoveObstacles()
+        {
+            JobSystem.MoveObjectsForward(Obstacles.ToArray(), ObstacleMovementSpeed);
+        }
+        
+        public static void DestroyAllObstacles()
+        {
+            foreach (var obstacles in Obstacles)
+            {
+                obstacles.SetActive(false);
+            }
         }
     }
 }

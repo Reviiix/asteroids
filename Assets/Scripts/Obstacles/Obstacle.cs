@@ -1,53 +1,54 @@
-﻿using UnityEngine;
+﻿using UnityEditor.Presets;
+using UnityEngine;
 
 namespace Obstacles
 {
     public class Obstacle : MonoBehaviour
     {
-        private SpriteRenderer _renderer;
+        private SpriteRenderer obstacleRenderer;
+        public static bool playerPresent = false;
         public const int MaximumAsteroidSize = 2;
         private const int DamageFactor = 1;
-        [Range(0, MaximumAsteroidSize)] 
+        [HideInInspector][Range(0, MaximumAsteroidSize)] 
         public int asteroidSize;
 
         private void Awake()
         {
-            InitialiseVariables();
+            Initialise();
         }
 
-        private void InitialiseVariables()
+        private void Initialise()
         {
-            _renderer = GetComponent<SpriteRenderer>();
+            obstacleRenderer = GetComponent<SpriteRenderer>();
         }
 
         private void OnTriggerEnter2D(Collider2D other)
         {
-            if (other.tag == "PlayerManager")
+            if (other.CompareTag("Player"))
             {
-                GameManager.Instance.PlayerDamaged(DamageFactor);
+                playerPresent = true;
+                GameManager.instance.PlayerDamaged(DamageFactor);
             }
         
-            if (other.tag == "Bullet")
+            if (other.CompareTag("Bullet"))
             {
+                other.transform.parent.gameObject.SetActive(false);
                 Destroy();
             }
         }
 
-        private void Initialise(Sprite sprite)
+        public void OnCreation(int startingAsteroidSize, Sprite newSprite)
         {
-            _renderer.sprite = sprite;
-            _renderer.enabled = true;
+            asteroidSize = startingAsteroidSize;
+            obstacleRenderer.sprite = newSprite;
         }
-
+        
         private void Destroy()
         {
-            if (asteroidSize == 0)
-            {
-                _renderer.enabled = false;
-                gameObject.SetActive(false);
-                return;
-            }
-            GameManager.Instance.CreateNewAsteroidFromOld(asteroidSize, transform);
+            asteroidSize--;
+            var trans = transform;
+            trans.parent.gameObject.SetActive(false);
+            GameManager.instance.OnObstacleDestruction(asteroidSize, trans);
         }
     }
 }
