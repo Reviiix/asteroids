@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Data;
 using Player;
 using UnityEngine;
 
@@ -21,7 +20,8 @@ namespace Shooting
             }
         }
         #endregion Bullet Speed
-
+        public static bool moveBullets = true;
+        
         public static void Initialise()
         {
             for (var i = 0; i < ObjectPooling.PoolDictionary[ObjectPoolIndex].Count; i++)
@@ -32,6 +32,8 @@ namespace Shooting
 
         public static void MoveBullets()
         {
+            if (!moveBullets) return;
+            
             JobSystem.MoveObjectsForward(Bullets.ToArray(),BulletSpeed);
         }
 

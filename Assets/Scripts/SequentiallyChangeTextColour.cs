@@ -2,49 +2,33 @@
 using TMPro;
 using UnityEngine;
 
-public class SequentiallyChangeTextColour : MonoBehaviour
+public static class SequentiallyChangeTextColour
 {
    private static Coroutine _changeTextRoutine;
-   private const int FlashTime = 1;
-   private readonly WaitForSeconds _waitTimeBetweenSpawningObstacles = new WaitForSeconds(FlashTime);
-   private TMP_Text _textToChange;
-   private readonly Color _firstColor = Color.white;
-   private readonly Color _secondColor = Color.red;
+   private const float FlashTime = 0.75f;
+   private static readonly WaitForSeconds WaitTime = new WaitForSeconds(FlashTime);
+   private static readonly Color FirstColor = Color.white;
+   private static readonly Color SecondColor = Color.black;
 
-   private void Awake()
+   public static void StartChangeTextColorSequence(TMP_Text textToChange)
    {
-      _textToChange = GetComponent<TMP_Text>();
-   }
-
-   private void OnEnable()
-   {
-      StartChangeTextColorSequence();
+      _changeTextRoutine = GameManager.instance.StartCoroutine(ChangeTextColor(textToChange));
    }
    
-   private void OnDisable()
-   {
-      StopChangeTextColorSequence();
-   }
-
-   private void StartChangeTextColorSequence()
-   {
-      _changeTextRoutine = StartCoroutine(ChangeTextColor());
-   }
-   
-   private void StopChangeTextColorSequence()
+   public static void StopChangeTextColorSequence()
    {
       if (_changeTextRoutine != null)
       {
-         StopCoroutine(_changeTextRoutine);
+         GameManager.instance.StopCoroutine(_changeTextRoutine);
       }
    }
    
-   private IEnumerator ChangeTextColor()
+   private static IEnumerator ChangeTextColor(TMP_Text textToChange)
    {
-      _textToChange.color = _firstColor;
-      yield return _waitTimeBetweenSpawningObstacles;
-      _textToChange.color = _secondColor;
-      yield return _waitTimeBetweenSpawningObstacles;
-      StartChangeTextColorSequence();
+      textToChange.color = FirstColor;
+      yield return WaitTime;
+      textToChange.color = SecondColor;
+      yield return WaitTime;
+      StartChangeTextColorSequence(textToChange);
    }
 }

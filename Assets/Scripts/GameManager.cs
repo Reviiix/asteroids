@@ -7,22 +7,17 @@ using System;
 using System.Collections;
 using Shooting;
 
-
 public class GameManager : MonoBehaviour
 {
-    public static GameManager instance;
+    public const Difficulty GameDifficulty = Difficulty.Hard;
     private const bool ShowDebugMessages = true;
-    private const int DestructionParticlePrefabPoolIndex = 3;
-    private const int SecondsBeforeContinuingGamePlay = 1;
-    [SerializeField]
-    private PlayerManager playerManager;
-    [SerializeField]
-    private ObstacleManager obstacleManager;
-    public AudioManager audioManager;
-    public Camera mainCamera;
-    public ObjectPooling objectPools;
+    public static GameManager instance;
     public UserInterfaceManager userInterfaceManager;
-    
+    public PlayerManager playerManager;
+    public ObstacleManager obstacleManager;
+    public AudioManager audioManager;
+    public ObjectPooling objectPools;
+    public Camera mainCamera;
 
     private void Awake()
     {
@@ -38,6 +33,11 @@ public class GameManager : MonoBehaviour
     {
         StopAllCoroutines();
     }
+    
+    private void InitialiseVariables()
+    {
+        instance = this;
+    }
 
     private void InitialisePlaneOldCSharpClasses()
     {
@@ -48,14 +48,8 @@ public class GameManager : MonoBehaviour
         ObstacleManager.Initialise();
         TimeTracker.Initialise();
         ScoreTracker.Initialise();
-        ShakeObject.Initialise();
     }
-    
-    private void InitialiseVariables()
-    {
-        instance = this;
-    }
-    
+
     private void Update()
     {
         playerManager.PlayerUpdate();
@@ -63,6 +57,7 @@ public class GameManager : MonoBehaviour
         ObstacleManager.MoveObstacles();
     }
 
+    [ContextMenu("Reload Game")]
     public void ReloadGame()
     {
         ScoreTracker.Initialise();
@@ -71,62 +66,62 @@ public class GameManager : MonoBehaviour
         BulletManager.DestroyAllBullets();
         ObstacleManager.DestroyAllObstacles();
         
-        RestoreHealth();
+        playerManager.RestoreHealth();
+        
         userInterfaceManager.EnableStartCanvas();
+        
+        DisplayDebugMessage("Game reloaded. Obstacles and bullets \"destroyed\", time/score reset and start canvas enabled.");
     }
 
-    private void RestoreHealth()
-    {
-        playerManager.playerHealth.RestoreHealth();
-        for (var i = 0; i <= Health.MaxHealth; i++)
-        {
-            userInterfaceManager.UpdateLivesDisplay(true);
-        }
-    }
-
+    [ContextMenu("Start Game Play")]
     public void StartGamePlay()
     {
-        EnablePlayerConstraints(false);
+        PlayerManager.EnablePlayerConstraints(false);
+        
         TimeTracker.StartTimer();
+        
         obstacleManager.StartCreatObstacleSequence();
+        
         playerManager.playerRenderer.enabled = true;
+        playerManager.StopInvincibilitySequence();
+        PlayerShooting.canShoot = true;
 
         DisplayDebugMessage("Game play started.");
     }
-
-    [ContextMenu("Player Damaged")]
-    public void PlayerDamaged(int damage)
+    
+    
+    public void OnPlayerCollision(int damage)
     {
-        EnablePlayerConstraints(true);
-        userInterfaceManager.UpdateLivesDisplay(false);
-        Health.TakeDamage(damage, delegate(bool gameOver)
+        if (!PlayerHealth.canBeDamaged)
         {
-            audioManager.PlayDestructionSound();
-            playerManager.playerRenderer.enabled = false;
-            PlayerDeathSequence(() =>
-            {
-                GameAreaTransporter.PlaceObjectInCentre(ReturnPlayer());
-                if (gameOver)
-                {
-                    EndGame();
-                }
-                else
-                {
-                    StartCoroutine(Wait(SecondsBeforeContinuingGamePlay, ()=>
-                    {
-                        EnablePlayerConstraints(false);
-                        playerManager.playerRenderer.enabled = true;
-                    }));
-                }
-            });
-            DisplayDebugMessage("PlayerManager received " + damage + "damage.");
-        });
-    }
+            return;
+        }
+        GameArea.CreateDestructionParticle(ReturnPlayer().position);
+        
+        audioManager.PlayDamageSound();
+        
+        userInterfaceManager.UpdateLivesDisplay(false);
+        
+        PlayerManager.EnablePlayerConstraints();
 
-    private static void PlayerDeathSequence(Action callBack)
-    {
-        ObjectPooling.ReturnObjectFromPool(DestructionParticlePrefabPoolIndex, ReturnPlayer().position, Quaternion.identity);
-        instance.StartCoroutine(Wait(SecondsBeforeContinuingGamePlay, callBack));
+        GameAreaTransporter.PlaceObjectInCentre(ReturnPlayer());
+        
+        PlayerHealth.TakeDamage(damage, delegate(bool gameOver)
+        {
+            if (gameOver)
+            {
+                EndGame();
+            }
+            else
+            {
+                StartCoroutine(Wait(PlayerManager.SecondsBeforePlayerCanMoveAfterReSpawn, () =>
+                {
+                    PlayerManager.EnablePlayerConstraints(false);
+                    playerManager.StartInvincibilitySequence();
+                }));
+            }
+        });
+        DisplayDebugMessage("Player received " + damage + "damage.");
     }
 
     public void OnObstacleDestruction(int asteroidSize, Transform position)
@@ -134,7 +129,7 @@ public class GameManager : MonoBehaviour
         audioManager.PlayDestructionSound();
         if (asteroidSize < 0)
         {
-            ObjectPooling.ReturnObjectFromPool(DestructionParticlePrefabPoolIndex, position.position, Quaternion.identity);
+            GameArea.CreateDestructionParticle(position.position);
             return;
         }
         
@@ -147,24 +142,21 @@ public class GameManager : MonoBehaviour
     [ContextMenu("End Game Play")]
     private void EndGame()
     {
-        TimeTracker.StopTimer();
-        EnablePlayerConstraints(true);
+        PlayerManager.EnablePlayerConstraints();
+        PlayerHealth.canBeDamaged = false;
+        PlayerShooting.canShoot = false;
+        playerManager.playerRenderer.enabled = false;
+        
         obstacleManager.StopCreatObstacleSequence();
+
+        TimeTracker.StopTimer();
         HighSores.SetHighScore(ScoreTracker.score);
+        
         userInterfaceManager.EnableGameOverCanvas();
+
         DisplayDebugMessage("Game play over.");
     }
-    
-    public static void EnablePlayerConstraints(bool state)
-    {
-        PlayerMovement.EnablePlayerMovementConstraints(state);
-        PlayerShooting.canShoot = !state;
-        instance.StartCoroutine(Wait(1, () =>
-        {
-            instance.playerManager.playerRigidBody.simulated = !state;
-        }));
-    }
-    
+
     public static Transform ReturnPlayer()
     {
         return instance.playerManager.playerTransform;
@@ -186,33 +178,12 @@ public class GameManager : MonoBehaviour
     }
 }
 
-namespace Player
+public enum Difficulty
 {
-    [Serializable]
-    public class PlayerManager
-    {
-        public Transform playerTransform;
-        [HideInInspector]
-        public Rigidbody2D playerRigidBody;
-        [HideInInspector]
-        public SpriteRenderer playerRenderer;
-        public Health playerHealth;
-        public PlayerMovement playerMovement;
-        public PlayerShooting playerShooting;
-
-        public void PlayerInitialise()
-        {
-            playerRigidBody = playerTransform.GetComponent<Rigidbody2D>();
-            playerRenderer = playerTransform.GetComponent<SpriteRenderer>();
-            playerMovement.Initialise();
-            playerShooting.Initialise();
-        }
-
-        public void PlayerUpdate()
-        {
-            playerMovement.PlayerMovementUpdate();
-            playerShooting.PlayerShootUpdate();
-        }
-    }
+    //obstacles have a 1 in x chance of not spawning.
+    Easy  = 2,
+    Medium  = 10,
+    Hard = 100
 }
+
 

@@ -10,7 +10,7 @@ namespace Statistics
         private static TMP_Text _timeText;
         private static bool _trackTime;
         private static Coroutine _timeTracker;
-        private const string TimeDisplayPrefix = "<u>TIME:</u> ";
+        private const string TimeDisplayPrefix = "TIME: ";
         private static DateTime _startTime;
 
         public static void Initialise()
@@ -25,6 +25,27 @@ namespace Statistics
             _startTime = DateTime.Now;
             _timeTracker = GameManager.instance.StartCoroutine(TrackTime(_startTime));
         }
+        
+        public static void PauseTimer()
+        {
+            pauseStart = DateTime.Now;
+            StopTimer();
+        }
+
+        private static DateTime pauseStart;
+        private static DateTime pauseEnd;
+        private static TimeSpan pauseTime;
+        
+        public static void ResumeTimer()
+        {
+            pauseEnd = DateTime.Now;
+            pauseTime = pauseEnd - pauseStart;
+            
+            _trackTime = true;
+            _startTime += pauseTime;
+            _timeTracker = GameManager.instance.StartCoroutine(TrackTime(_startTime));
+        }
+        
     
         public static void StopTimer()
         {
@@ -59,9 +80,9 @@ namespace Statistics
             display.text = TimeDisplayPrefix + TrackTimeFrom(startingTime).ToString(@"m\:ss\:ff");
         }
     
-        private static TimeSpan TrackTimeFrom(DateTime timeSoFar)
+        private static TimeSpan TrackTimeFrom(DateTime originalTime)
         {
-            return(DateTime.Now - timeSoFar);
+            return(DateTime.Now - originalTime);
         }
     }
 }

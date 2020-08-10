@@ -1,4 +1,4 @@
-﻿using UnityEditor.Presets;
+﻿using System;
 using UnityEngine;
 
 namespace Obstacles
@@ -6,7 +6,7 @@ namespace Obstacles
     public class Obstacle : MonoBehaviour
     {
         private SpriteRenderer obstacleRenderer;
-        public static bool playerPresent = false;
+        public static bool playerPresentInAnyObstacleTrigger;
         public const int MaximumAsteroidSize = 2;
         private const int DamageFactor = 1;
         [HideInInspector][Range(0, MaximumAsteroidSize)] 
@@ -26,14 +26,22 @@ namespace Obstacles
         {
             if (other.CompareTag("Player"))
             {
-                playerPresent = true;
-                GameManager.instance.PlayerDamaged(DamageFactor);
+                playerPresentInAnyObstacleTrigger = true;
+                GameManager.instance.OnPlayerCollision(DamageFactor);
             }
         
             if (other.CompareTag("Bullet"))
             {
                 other.transform.parent.gameObject.SetActive(false);
                 Destroy();
+            }
+        }
+
+        private void OnTriggerExit2D(Collider2D other)
+        {
+            if (other.CompareTag("Player"))
+            {
+                playerPresentInAnyObstacleTrigger = false;
             }
         }
 

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using Player;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -9,8 +10,9 @@ namespace Obstacles
     [Serializable]
     public class ObstacleManager
     {
+        public static bool moveObstacles = true;
         private static readonly List<GameObject> Obstacles = new List<GameObject>();
-        private const float ObstacleMovementSpeed = 3f;
+        private const float ObstacleMovementSpeed = PlayerMovement.MovementSpeed - float.Epsilon;
         [SerializeField]
         private Transform[] obstacleSpawnPositions;
         [SerializeField]
@@ -19,19 +21,13 @@ namespace Obstacles
         private const int ObjectPoolIndex = 2;
         private static Coroutine _obstacleCreationSequence;
         #region Time Between Obstacles
-        private const int MinimumTimeBetweenSpawningObstacles = 1;
-        private const int MaximumTimeBetweenSpawningObstacles = 3;
-        private static float TimeBetweenSpawningObstacles => Random.Range( MinimumTimeBetweenSpawningObstacles, MaximumTimeBetweenSpawningObstacles);
-        private static WaitForSeconds _waitTimeBetweenSpawningObstacles;
+        private const int TimeBetweenSpawningObstacles = 1;
+        private static readonly WaitForSeconds WaitTimeBetweenSpawningObstacles = new WaitForSeconds(TimeBetweenSpawningObstacles);
         #endregion Time Between Obstacles
 
+        private static int previosSpawnIndex = 0;
+
         public static void Initialise()
-        {
-            _waitTimeBetweenSpawningObstacles = new WaitForSeconds(TimeBetweenSpawningObstacles);
-            InitialiseObstacleList();
-        }
-        
-        private static void InitialiseObstacleList()
         {
             for (var i = 0; i < ObjectPooling.PoolDictionary[ObjectPoolIndex].Count; i++)
             {
@@ -54,13 +50,24 @@ namespace Obstacles
 
         private IEnumerator ContinuouslyCreatObstaclesSequence()
         {
-            yield return _waitTimeBetweenSpawningObstacles;
-            CreateObstacle(Obstacle.MaximumAsteroidSize, obstacleSpawnPositions[Random.Range(0, obstacleSpawnPositions.Length)]);
+            yield return WaitTimeBetweenSpawningObstacles;
+            if (Random.Range(0, (int)GameManager.GameDifficulty) != (int)GameManager.GameDifficulty)
+            {
+                var currentSpawnIndex = ReturnRandomIndexThatIsNotX(previosSpawnIndex, obstacleSpawnPositions.Length);
+                CreateObstacle(Obstacle.MaximumAsteroidSize, obstacleSpawnPositions[currentSpawnIndex]);
+                previosSpawnIndex = currentSpawnIndex;
+            }
             StartCreatObstacleSequence();
         }
 
-        private const int TiltFactor = 10;
-    
+        private static int ReturnRandomIndexThatIsNotX(int x, int maxValue)
+        {
+            var returnVariable = Random.Range(0, maxValue);
+            
+            // ReSharper disable once TailRecursiveCall
+            return returnVariable == x ? ReturnRandomIndexThatIsNotX(x, maxValue) : returnVariable;
+        }
+
         public void CreateObstacle(int asteroidSize, Transform spawnPosition, bool randomRotate = false)
         {
             GameManager.DisplayDebugMessage("Asteroid created. Size: " + asteroidSize + ". Location: " + spawnPosition);
@@ -76,6 +83,8 @@ namespace Obstacles
 
         public static void MoveObstacles()
         {
+            if (!moveObstacles) return;
+            
             JobSystem.MoveObjectsForward(Obstacles.ToArray(), ObstacleMovementSpeed);
         }
         
