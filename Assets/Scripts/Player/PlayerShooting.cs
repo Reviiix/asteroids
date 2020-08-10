@@ -6,7 +6,8 @@ namespace Player
 {
     public static class PlayerShooting
     {
-        public static bool canShoot;
+        public static bool canShoot = false;
+        private static bool _shootDelay = true;
         private const int ObjectPoolIndex = BulletManager.ObjectPoolIndex;
         private static Transform _bulletSpawnLocation;
         private const float TimeBetweenShots = 0.3f;
@@ -24,11 +25,13 @@ namespace Player
 
         private static void CheckForInput()
         {
-            if (!Input.GetMouseButtonUp(0)) return;
-            
             if (!canShoot) return;
             
-            canShoot = false;
+            if (!Input.GetMouseButtonUp(0)) return;
+            
+            if (!_shootDelay) return;
+            
+            _shootDelay = false;
             
             GameManager.instance.StartCoroutine(SpawnBullet());
         }
@@ -38,7 +41,7 @@ namespace Player
             GameManager.instance.audioManager.PlayGunShotSound();
             ObjectPooling.ReturnObjectFromPool(ObjectPoolIndex, _bulletSpawnLocation.position, _bulletSpawnLocation.rotation);
             yield return WaitTimeBetweenShots;
-            canShoot = true;
+            _shootDelay = true;
         }
     }
 }

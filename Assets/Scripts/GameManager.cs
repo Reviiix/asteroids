@@ -84,6 +84,7 @@ public class GameManager : MonoBehaviour
         
         playerManager.playerRenderer.enabled = true;
         playerManager.StopInvincibilitySequence();
+        PlayerShooting.canShoot = true;
 
         DisplayDebugMessage("Game play started.");
     }
@@ -143,11 +144,14 @@ public class GameManager : MonoBehaviour
     {
         PlayerManager.EnablePlayerConstraints();
         PlayerHealth.canBeDamaged = false;
-        obstacleManager.StopCreatObstacleSequence();
+        PlayerShooting.canShoot = false;
         playerManager.playerRenderer.enabled = false;
+        
+        obstacleManager.StopCreatObstacleSequence();
 
         TimeTracker.StopTimer();
         HighSores.SetHighScore(ScoreTracker.score);
+        
         userInterfaceManager.EnableGameOverCanvas();
 
         DisplayDebugMessage("Game play over.");
