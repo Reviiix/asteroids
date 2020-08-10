@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Data;
 using Player;
 using UnityEngine;
 
@@ -28,10 +29,18 @@ namespace Shooting
                 Bullets.Add(ObjectPooling.ReturnObjectFromPool(ObjectPoolIndex, Vector3.zero, Quaternion.identity,false));
             }
         }
-        
+
         public static void MoveBullets()
-        { 
+        {
             JobSystem.MoveObjectsForward(Bullets.ToArray(),BulletSpeed);
+        }
+
+        public static void DestroyAllBullets()
+        {
+            foreach (var bullet in Bullets)
+            {
+                bullet.SetActive(false);
+            }
         }
     }
 }

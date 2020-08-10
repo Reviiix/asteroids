@@ -42,7 +42,7 @@ namespace Player
             }
         }
 
-        public static void EnablePlayerConstraints(bool state)
+        public static void EnablePlayerMovementConstraints(bool state)
         {
             _canMove = !state;
             _canRotate = !state;

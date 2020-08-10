@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Obstacles;
+using UnityEngine;
 using Vector3 = UnityEngine.Vector3;
 
 namespace PlayArea
@@ -26,12 +27,16 @@ namespace PlayArea
                 return;
             }
 
-            //No need to do another compare tag. We can assume if another rigid body enters this trigger that isn't a bullet or an obstacle, its the player (This will not remain true if more rigid bodies are added to the scene.).
-            var screenEdge = ReturnScreenEdgeFromPosition(horizontalBox, other.transform.position);
-            
-            GameAreaTransporter.MoveToScreenEdge(other.transform, screenEdge);
-            
-            GameManager.DisplayDebugMessage("Player exited via the " + screenEdge +" of the screen, ejecting them on the opposite side.");
+            if (other.gameObject.CompareTag("Player"))
+            {
+                if (Obstacle.playerPresent) return;
+                
+                var screenEdge = ReturnScreenEdgeFromPosition(horizontalBox, other.transform.position);
+
+                GameAreaTransporter.MoveToScreenEdge(other.transform, screenEdge);
+
+                GameManager.DisplayDebugMessage("Player exited via the " + screenEdge + " of the screen, ejecting them on the opposite side.");
+            }
         }
 
         private static ScreenEdge ReturnScreenEdgeFromPosition(bool horizontal, Vector3 position)

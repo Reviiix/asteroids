@@ -18,14 +18,18 @@ public class AudioManager
     {
         CreateHashSetOfAudioSourcesFromPools();
     }
-
-    //This avoids having to use a getcomponent on the object every time you want to play a sound.
+    
     private static void CreateHashSetOfAudioSourcesFromPools()
     {
         for (var i = 0; i < GameManager.instance.objectPools.pools[AudioSourcePoolIndex].maximumActiveObjects; i++)
         {
             AudioSources.Add(ObjectPooling.ReturnObjectFromPool(0, AudioSourceStartingLocation, Quaternion.identity).GetComponent<AudioSource>());
         }
+    }
+
+    public void PlayButtonClick()
+    {
+        PlayClip(buttonClick);
     }
 
     public static void PlayClip(AudioClip clip, bool looping = false)
