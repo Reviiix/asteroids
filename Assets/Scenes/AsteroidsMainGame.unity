@@ -1253,7 +1253,7 @@ MonoBehaviour:
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 17
+  m_fontStyle: 21
   m_textAlignment: 514
   m_characterSpacing: 0
   m_wordSpacing: 0
@@ -1622,7 +1622,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a12f66f60f044f5282e4e48249c69b7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerManagerffff:
+  userInterfaceManager:
+    timeText: {fileID: 1471371830}
+    scoreText: {fileID: 889968575}
+    livesDisplay:
+    - {fileID: 756968736}
+    - {fileID: 727290723}
+    - {fileID: 830166071}
+    pauseButton: {fileID: 209457846}
+    pauseSprite: {fileID: 21300000, guid: 654554ea32497489fbfcd89460776bff, type: 3}
+    playSprite: {fileID: 21300000, guid: 2a88a4675b30a42628d36ef95cdb98aa, type: 3}
+    startCanvas: {fileID: 209457435}
+    startButton: {fileID: 2050390304}
+    pauseCanvas: {fileID: 2103722847}
+    gameOverCanvas: {fileID: 1003189799}
+    finalTimeText: {fileID: 1170733038}
+    finalScoreText: {fileID: 697970814}
+    highScoreText: {fileID: 1939776492}
+    restartButton: {fileID: 1652876116}
+  playerManager:
     playerTransform: {fileID: 323995535}
     playerRenderer: {fileID: 0}
   obstacleManager:
@@ -1653,27 +1671,9 @@ MonoBehaviour:
     buttonClick: {fileID: 8300000, guid: 08b2683eba29942269f346b792617f7e, type: 3}
     shooting: {fileID: 8300000, guid: 3c76c3026809548dd8d9a2043778b314, type: 3}
     destruction: {fileID: 8300000, guid: 6fc398377a9934348935470d7d763cf2, type: 3}
-    damage: {fileID: 0}
+    damage: {fileID: 8300000, guid: df09abfd77b49418cbc70b15757bd53d, type: 3}
   objectPools: {fileID: 1232540354}
   mainCamera: {fileID: 519420031}
-  userInterfaceManager:
-    timeText: {fileID: 1471371830}
-    scoreText: {fileID: 889968575}
-    livesDisplay:
-    - {fileID: 756968736}
-    - {fileID: 727290723}
-    - {fileID: 830166071}
-    pauseButton: {fileID: 209457846}
-    pauseSprite: {fileID: 21300000, guid: 654554ea32497489fbfcd89460776bff, type: 3}
-    playSprite: {fileID: 21300000, guid: 2a88a4675b30a42628d36ef95cdb98aa, type: 3}
-    startCanvas: {fileID: 209457435}
-    startButton: {fileID: 2050390304}
-    pauseCanvas: {fileID: 2103722847}
-    gameOverCanvas: {fileID: 1003189799}
-    finalTimeText: {fileID: 1170733038}
-    finalScoreText: {fileID: 697970814}
-    highScoreText: {fileID: 1939776492}
-    restartButton: {fileID: 1652876116}
 --- !u!114 &773159864
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2243,7 +2243,7 @@ MonoBehaviour:
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 17
+  m_fontStyle: 21
   m_textAlignment: 514
   m_characterSpacing: 0
   m_wordSpacing: 0
@@ -3328,7 +3328,7 @@ MonoBehaviour:
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 17
+  m_fontStyle: 21
   m_textAlignment: 514
   m_characterSpacing: 0
   m_wordSpacing: 0

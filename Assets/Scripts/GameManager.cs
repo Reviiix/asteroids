@@ -12,12 +12,12 @@ public class GameManager : MonoBehaviour
     public const Difficulty GameDifficulty = Difficulty.Hard;
     private const bool ShowDebugMessages = true;
     public static GameManager instance;
-    public PlayerManagerffff playerManagerffff;
+    public UserInterfaceManager userInterfaceManager;
+    public PlayerManager playerManager;
     public ObstacleManager obstacleManager;
     public AudioManager audioManager;
     public ObjectPooling objectPools;
     public Camera mainCamera;
-    public UserInterfaceManager userInterfaceManager;
 
     private void Awake()
     {
@@ -42,7 +42,7 @@ public class GameManager : MonoBehaviour
     private void InitialisePlaneOldCSharpClasses()
     {
         userInterfaceManager.Initialise();
-        playerManagerffff.PlayerInitialise();
+        playerManager.PlayerInitialise();
         AudioManager.CreateHashSetOfAudioSourcesFromPools();
         BulletManager.Initialise();
         ObstacleManager.Initialise();
@@ -52,7 +52,7 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-        playerManagerffff.PlayerUpdate();
+        playerManager.PlayerUpdate();
         BulletManager.MoveBullets();
         ObstacleManager.MoveObstacles();
     }
@@ -66,24 +66,24 @@ public class GameManager : MonoBehaviour
         BulletManager.DestroyAllBullets();
         ObstacleManager.DestroyAllObstacles();
         
-        playerManagerffff.RestoreHealth();
+        playerManager.RestoreHealth();
         
         userInterfaceManager.EnableStartCanvas();
         
-        DisplayDebugMessage("Game reloaded. Obstacles and bullets \"destroyed\", Time and score reset. Start canvas enabled.");
+        DisplayDebugMessage("Game reloaded. Obstacles and bullets \"destroyed\", time/score reset and start canvas enabled.");
     }
 
     [ContextMenu("Start Game Play")]
     public void StartGamePlay()
     {
-        PlayerManagerffff.EnablePlayerConstraints(false);
+        PlayerManager.EnablePlayerConstraints(false);
         
         TimeTracker.StartTimer();
         
         obstacleManager.StartCreatObstacleSequence();
         
-        playerManagerffff.playerRenderer.enabled = true;
-        playerManagerffff.StopInvincibilitySequence();
+        playerManager.playerRenderer.enabled = true;
+        playerManager.StopInvincibilitySequence();
 
         DisplayDebugMessage("Game play started.");
     }
@@ -101,7 +101,7 @@ public class GameManager : MonoBehaviour
         
         userInterfaceManager.UpdateLivesDisplay(false);
         
-        PlayerManagerffff.EnablePlayerConstraints();
+        PlayerManager.EnablePlayerConstraints();
 
         GameAreaTransporter.PlaceObjectInCentre(ReturnPlayer());
         
@@ -113,10 +113,10 @@ public class GameManager : MonoBehaviour
             }
             else
             {
-                StartCoroutine(Wait(PlayerManagerffff.SecondsBeforePlayerCanMoveAfterReSpawn, () =>
+                StartCoroutine(Wait(PlayerManager.SecondsBeforePlayerCanMoveAfterReSpawn, () =>
                 {
-                    PlayerManagerffff.EnablePlayerConstraints(false);
-                    playerManagerffff.StartInvincibilitySequence();
+                    PlayerManager.EnablePlayerConstraints(false);
+                    playerManager.StartInvincibilitySequence();
                 }));
             }
         });
@@ -141,10 +141,10 @@ public class GameManager : MonoBehaviour
     [ContextMenu("End Game Play")]
     private void EndGame()
     {
-        PlayerManagerffff.EnablePlayerConstraints();
+        PlayerManager.EnablePlayerConstraints();
         PlayerHealth.canBeDamaged = false;
         obstacleManager.StopCreatObstacleSequence();
-        playerManagerffff.playerRenderer.enabled = false;
+        playerManager.playerRenderer.enabled = false;
 
         TimeTracker.StopTimer();
         HighSores.SetHighScore(ScoreTracker.score);
@@ -155,7 +155,7 @@ public class GameManager : MonoBehaviour
 
     public static Transform ReturnPlayer()
     {
-        return instance.playerManagerffff.playerTransform;
+        return instance.playerManager.playerTransform;
     }
 
     public static IEnumerator Wait(float seconds, Action callBack)
@@ -176,71 +176,10 @@ public class GameManager : MonoBehaviour
 
 public enum Difficulty
 {
-    Easy  = 1,
+    //obstacles have a 1 in x chance of not spawning.
+    Easy  = 2,
     Medium  = 10,
     Hard = 100
 }
 
-namespace Player
-{
-    [Serializable]
-    public class PlayerManagerffff
-    {
-        public Transform playerTransform;
-        [HideInInspector]
-        public SpriteRenderer playerRenderer;
-        public const float SecondsBeforePlayerCanMoveAfterReSpawn = 0.3f;
-        private const float InvincibilityFlashes = 25;
-        private static Coroutine _playerDamageSequence;
-
-        public void PlayerInitialise()
-        {
-            playerRenderer = playerTransform.GetComponent<SpriteRenderer>();
-            
-            PlayerMovement.Initialise();
-            PlayerShooting.Initialise();
-        }
-
-        public void PlayerUpdate()
-        {
-            PlayerMovement.PlayerMovementUpdate();
-            PlayerShooting.PlayerShootUpdate();
-        }
-        
-        public void StartInvincibilitySequence()
-        {
-            PlayerHealth.canBeDamaged = false;
-            _playerDamageSequence = GameManager.instance.StartCoroutine(FlashSprite.Flash(playerRenderer, InvincibilityFlashes, StopInvincibilitySequence));
-        }
-        
-        public void StopInvincibilitySequence()
-        {
-            if (_playerDamageSequence != null)
-            {
-                GameManager.instance.StopCoroutine(_playerDamageSequence);
-            }
-            PlayerHealth.canBeDamaged = true;
-            playerRenderer.enabled = true;
-        }
-        
-        public  void RestoreHealth()
-        {
-            var userInterface = GameManager.instance.userInterfaceManager;
-            const int maxHealth = PlayerHealth.MaxHealth;
-            
-            PlayerHealth.RestoreHealth();
-
-            for (var i = 0; i <= maxHealth; i++)
-            {
-                userInterface.UpdateLivesDisplay(true);
-            }
-        }
-        
-        public static void EnablePlayerConstraints(bool state = true)
-        {
-            PlayerMovement.EnablePlayerMovementConstraints(state);
-            PlayerShooting.canShoot = !state;
-        }
-    }
-}
 

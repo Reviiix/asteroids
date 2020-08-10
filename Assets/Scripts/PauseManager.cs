@@ -18,7 +18,7 @@ public static class PauseManager
     private static void StartGame(bool state)
     {
         GameManager.instance.userInterfaceManager.EnablePauseCanvas(state);
-        PlayerManagerffff.EnablePlayerConstraints(state);
+        PlayerManager.EnablePlayerConstraints(state);
         ObstacleManager.moveObstacles = !state;
         BulletManager.moveBullets = !state;
         PlayerShooting.canShoot = !state;
