@@ -29,7 +29,7 @@ namespace PlayArea
 
             if (other.gameObject.CompareTag("Player"))
             {
-                if (Obstacle.playerPresent) return;
+                if (Obstacle.playerPresentInAnyObstacleTrigger) return;
                 
                 var screenEdge = ReturnScreenEdgeFromPosition(horizontalBox, other.transform.position);
 

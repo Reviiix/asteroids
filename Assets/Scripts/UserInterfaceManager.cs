@@ -30,7 +30,6 @@ public class UserInterfaceManager
     private static readonly Color HighScoreColour = Color.blue;
     public Button restartButton;
     
-    
     public void Initialise()
     {
         EnableStartCanvas();

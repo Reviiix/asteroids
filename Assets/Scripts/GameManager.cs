@@ -13,7 +13,6 @@ public class GameManager : MonoBehaviour
     public static GameManager instance;
     private const bool ShowDebugMessages = true;
     private const int DestructionParticlePrefabPoolIndex = 3;
-    private const int SecondsBeforeContinuingGamePlay = 1;
     [SerializeField]
     private PlayerManager playerManager;
     [SerializeField]
@@ -22,8 +21,10 @@ public class GameManager : MonoBehaviour
     public Camera mainCamera;
     public ObjectPooling objectPools;
     public UserInterfaceManager userInterfaceManager;
+    private const float SecondsBeforePlayerCanMoveAfterReSpawn = 0;
+    private const float invincibilityFlashes = 25;
+    private static Coroutine _playerDamageSequence;
     
-
     private void Awake()
     {
         InitialiseVariables();
@@ -38,6 +39,11 @@ public class GameManager : MonoBehaviour
     {
         StopAllCoroutines();
     }
+    
+    private void InitialiseVariables()
+    {
+        instance = this;
+    }
 
     private void InitialisePlaneOldCSharpClasses()
     {
@@ -48,14 +54,8 @@ public class GameManager : MonoBehaviour
         ObstacleManager.Initialise();
         TimeTracker.Initialise();
         ScoreTracker.Initialise();
-        ShakeObject.Initialise();
     }
-    
-    private void InitialiseVariables()
-    {
-        instance = this;
-    }
-    
+
     private void Update()
     {
         playerManager.PlayerUpdate();
@@ -72,12 +72,14 @@ public class GameManager : MonoBehaviour
         ObstacleManager.DestroyAllObstacles();
         
         RestoreHealth();
+        
         userInterfaceManager.EnableStartCanvas();
     }
 
     private void RestoreHealth()
     {
         playerManager.playerHealth.RestoreHealth();
+        
         for (var i = 0; i <= Health.MaxHealth; i++)
         {
             userInterfaceManager.UpdateLivesDisplay(true);
@@ -87,46 +89,54 @@ public class GameManager : MonoBehaviour
     public void StartGamePlay()
     {
         EnablePlayerConstraints(false);
+        
         TimeTracker.StartTimer();
+        
         obstacleManager.StartCreatObstacleSequence();
+        
         playerManager.playerRenderer.enabled = true;
+        playerManager.playerRigidBody.simulated = true;
 
         DisplayDebugMessage("Game play started.");
+    }
+
+    private void StartInvincibilitySequence()
+    {
+        playerManager.playerRigidBody.simulated = false;
+        _playerDamageSequence = StartCoroutine(FlashSprite.Flash(playerManager.playerRenderer, invincibilityFlashes, () =>
+        {
+            playerManager.playerRigidBody.simulated = true;
+            StopInvincibilitySequence();
+        }));
     }
 
     [ContextMenu("Player Damaged")]
     public void PlayerDamaged(int damage)
     {
-        EnablePlayerConstraints(true);
+        CreateDestructionParticle();
+        audioManager.PlayDestructionSound();
+        
         userInterfaceManager.UpdateLivesDisplay(false);
+
+        GameAreaTransporter.PlaceObjectInCentre(ReturnPlayer());
+        
         Health.TakeDamage(damage, delegate(bool gameOver)
         {
-            audioManager.PlayDestructionSound();
-            playerManager.playerRenderer.enabled = false;
-            PlayerDeathSequence(() =>
+            if (gameOver)
             {
-                GameAreaTransporter.PlaceObjectInCentre(ReturnPlayer());
-                if (gameOver)
-                {
-                    EndGame();
-                }
-                else
-                {
-                    StartCoroutine(Wait(SecondsBeforeContinuingGamePlay, ()=>
-                    {
-                        EnablePlayerConstraints(false);
-                        playerManager.playerRenderer.enabled = true;
-                    }));
-                }
-            });
-            DisplayDebugMessage("PlayerManager received " + damage + "damage.");
+                EndGame();
+            }
+            else
+            {
+                StartInvincibilitySequence();
+            }
         });
+        DisplayDebugMessage("Player received " + damage + "damage.");
     }
 
-    private static void PlayerDeathSequence(Action callBack)
+    private static void CreateDestructionParticle()
     {
         ObjectPooling.ReturnObjectFromPool(DestructionParticlePrefabPoolIndex, ReturnPlayer().position, Quaternion.identity);
-        instance.StartCoroutine(Wait(SecondsBeforeContinuingGamePlay, callBack));
     }
 
     public void OnObstacleDestruction(int asteroidSize, Transform position)
@@ -134,7 +144,7 @@ public class GameManager : MonoBehaviour
         audioManager.PlayDestructionSound();
         if (asteroidSize < 0)
         {
-            ObjectPooling.ReturnObjectFromPool(DestructionParticlePrefabPoolIndex, position.position, Quaternion.identity);
+            CreateDestructionParticle();
             return;
         }
         
@@ -147,11 +157,15 @@ public class GameManager : MonoBehaviour
     [ContextMenu("End Game Play")]
     private void EndGame()
     {
-        TimeTracker.StopTimer();
         EnablePlayerConstraints(true);
-        obstacleManager.StopCreatObstacleSequence();
+        playerManager.playerRigidBody.simulated = false;
+        playerManager.playerRenderer.enabled = false;
+        
+        TimeTracker.StopTimer();
+        //obstacleManager.StopCreatObstacleSequence();
         HighSores.SetHighScore(ScoreTracker.score);
         userInterfaceManager.EnableGameOverCanvas();
+
         DisplayDebugMessage("Game play over.");
     }
     
@@ -159,10 +173,16 @@ public class GameManager : MonoBehaviour
     {
         PlayerMovement.EnablePlayerMovementConstraints(state);
         PlayerShooting.canShoot = !state;
-        instance.StartCoroutine(Wait(1, () =>
+    }
+
+    private static void StopInvincibilitySequence()
+    {
+        if (_playerDamageSequence != null)
         {
-            instance.playerManager.playerRigidBody.simulated = !state;
-        }));
+            instance.StopCoroutine(_playerDamageSequence);
+        }
+        instance.playerManager.playerRigidBody.simulated = true;
+        instance.playerManager.playerRenderer.enabled = true;
     }
     
     public static Transform ReturnPlayer()

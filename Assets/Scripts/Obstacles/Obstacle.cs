@@ -1,12 +1,11 @@
-﻿using UnityEditor.Presets;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Obstacles
 {
     public class Obstacle : MonoBehaviour
     {
         private SpriteRenderer obstacleRenderer;
-        public static bool playerPresent = false;
+        public static bool playerPresentInAnyObstacleTrigger;
         public const int MaximumAsteroidSize = 2;
         private const int DamageFactor = 1;
         [HideInInspector][Range(0, MaximumAsteroidSize)] 
@@ -26,7 +25,7 @@ namespace Obstacles
         {
             if (other.CompareTag("Player"))
             {
-                playerPresent = true;
+                playerPresentInAnyObstacleTrigger = true;
                 GameManager.instance.PlayerDamaged(DamageFactor);
             }
         
