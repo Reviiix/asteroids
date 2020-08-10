@@ -43,6 +43,7 @@ public class GameManager : MonoBehaviour
     {
         userInterfaceManager.Initialise();
         playerManager.PlayerInitialise();
+        AudioManager.CreateHashSetOfAudioSourcesFromPools();
         BulletManager.Initialise();
         ObstacleManager.Initialise();
         TimeTracker.Initialise();
