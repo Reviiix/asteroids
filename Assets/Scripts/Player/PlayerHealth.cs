@@ -6,6 +6,7 @@ namespace Player
     [Serializable]
     public static class PlayerHealth
     {
+        public static bool canBeDamaged = true;
         public const int MaxHealth = 2;
         [Range(0,MaxHealth)]
         private static int _health = MaxHealth;

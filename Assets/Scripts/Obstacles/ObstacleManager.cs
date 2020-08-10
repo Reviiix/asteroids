@@ -9,6 +9,7 @@ namespace Obstacles
     [Serializable]
     public class ObstacleManager
     {
+        public static bool moveObstacles = true;
         private static readonly List<GameObject> Obstacles = new List<GameObject>();
         private const float ObstacleMovementSpeed = 3f;
         [SerializeField]
@@ -59,8 +60,6 @@ namespace Obstacles
             StartCreatObstacleSequence();
         }
 
-        private const int TiltFactor = 10;
-    
         public void CreateObstacle(int asteroidSize, Transform spawnPosition, bool randomRotate = false)
         {
             GameManager.DisplayDebugMessage("Asteroid created. Size: " + asteroidSize + ". Location: " + spawnPosition);
@@ -76,6 +75,8 @@ namespace Obstacles
 
         public static void MoveObstacles()
         {
+            if (!moveObstacles) return;
+            
             JobSystem.MoveObjectsForward(Obstacles.ToArray(), ObstacleMovementSpeed);
         }
         

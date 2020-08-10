@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace Obstacles
 {
@@ -33,6 +34,14 @@ namespace Obstacles
             {
                 other.transform.parent.gameObject.SetActive(false);
                 Destroy();
+            }
+        }
+
+        private void OnTriggerExit2D(Collider2D other)
+        {
+            if (other.CompareTag("Player"))
+            {
+                playerPresentInAnyObstacleTrigger = false;
             }
         }
 

@@ -13,6 +13,11 @@ public class UserInterfaceManager
     public TMP_Text scoreText;
     public RawImage[] livesDisplay;
     public Button pauseButton;
+    private Image pauseButtonImage;
+    [SerializeField] 
+    private Sprite pauseSprite;
+    [SerializeField] 
+    private Sprite playSprite;
 
     [SerializeField] [Header("Introduction Menu")]
     private Canvas startCanvas;
@@ -27,21 +32,28 @@ public class UserInterfaceManager
     public TMP_Text finalScoreText;
     public TMP_Text highScoreText;
     private const string HighScorePrefix = "<u>HIGHSCORE: </u>";
-    private static readonly Color HighScoreColour = Color.blue;
+    private static readonly Color HighScoreColour = Color.green;
     public Button restartButton;
     
     public void Initialise()
     {
         EnableStartCanvas();
         InitialiseVariables();
+        AddButtonEvents();
     }
 
     private void InitialiseVariables()
     {
-        startButton.onClick.AddListener(()=>EnableStartCanvas(false));
+        pauseButtonImage = pauseButton.GetComponent<Image>();
+    }
+
+    private void AddButtonEvents()
+    {
+        startButton.onClick.AddListener(() => EnableStartCanvas(false));
         startButton.onClick.AddListener(GameManager.instance.StartGamePlay);
         pauseButton.onClick.AddListener(PauseManager.PauseGamePlay);
         restartButton.onClick.AddListener(GameManager.instance.ReloadGame);
+        AddButtonClickNoise();
     }
 
     private void AddButtonClickNoise()
@@ -66,15 +78,22 @@ public class UserInterfaceManager
 
     public void EnableStartCanvas(bool state = true)
     {
+        pauseButton.gameObject.SetActive(!state);
+        
         EnabledAllNonPermanentCanvases(false);
         startCanvas.enabled = state;
-        startButton.GetComponent<SequentiallyChangeTextColour>().enabled = state;
+        SequentiallyChangeTextColour.StartChangeTextColorSequence(startButton.GetComponent<TMP_Text>());
     }
 
     public void EnableGameOverCanvas(bool state = true)
     {
+        pauseButton.gameObject.SetActive(!state);
+        
         EnabledAllNonPermanentCanvases(false);
         gameOverCanvas.enabled = state;
+        
+        SequentiallyChangeTextColour.StartChangeTextColorSequence(restartButton.GetComponent<TMP_Text>());
+        
         finalScoreText.text = scoreText.text;
         finalTimeText.text = timeText.text;
         
@@ -99,6 +118,13 @@ public class UserInterfaceManager
     {
         EnabledAllNonPermanentCanvases(false);
         pauseCanvas.enabled = state;
+        pauseButtonImage.sprite = ReturnPauseButtonSprite(PauseManager.isPaused);
+    }
+    
+
+    public Sprite ReturnPauseButtonSprite(bool state)
+    {
+        return state ? playSprite : pauseSprite;
     }
     
     private void EnabledAllNonPermanentCanvases(bool state)
@@ -106,5 +132,7 @@ public class UserInterfaceManager
         startCanvas.enabled = state;
         gameOverCanvas.enabled = state;
         pauseCanvas.enabled = state;
+        
+        SequentiallyChangeTextColour.StopChangeTextColorSequence();
     }
 }

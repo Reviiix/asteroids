@@ -61,5 +61,10 @@ public class AudioManager
         Debug.LogWarning("There are not enough audio sources to play that many sounds at once, please set a higher maximum amount in the object pool. The first or default audio source has been returned and may have cut of sounds unexpectedly.");
         return AudioSources.FirstOrDefault();
     }
+
+    public static void SetGlobalVolume(float volume)
+    {
+        AudioListener.volume = volume;
+    }
     
 }
