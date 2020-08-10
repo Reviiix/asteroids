@@ -26,7 +26,7 @@ namespace Obstacles
             if (other.CompareTag("Player"))
             {
                 playerPresentInAnyObstacleTrigger = true;
-                GameManager.instance.PlayerDamaged(DamageFactor);
+                GameManager.instance.OnPlayerCollision(DamageFactor);
             }
         
             if (other.CompareTag("Bullet"))

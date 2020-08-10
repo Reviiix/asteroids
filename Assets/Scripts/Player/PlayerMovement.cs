@@ -1,5 +1,4 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Player
 {
@@ -14,11 +13,9 @@ namespace Player
         private static float _camerasDistanceFromGame;
         private const float MousePlayerMinimumDistance = 0.01f;
         private static float MousePlayerActualMinimumDistance => MousePlayerMinimumDistance + _camerasDistanceFromGame;
-
         #endregion MousePlayerActualMinimumDistance
         private static Transform _player;
         
-
         public static void Initialise()
         {
             _player = GameManager.ReturnPlayer();

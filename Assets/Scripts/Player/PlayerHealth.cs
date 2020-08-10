@@ -18,7 +18,6 @@ namespace Player
                 dead(true);
                 return;
             }
-
             dead(false);
         }
 
@@ -26,6 +25,5 @@ namespace Player
         {
             _health = MaxHealth;
         }
-
     }
 }

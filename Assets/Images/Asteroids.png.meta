@@ -173,12 +173,12 @@ TextureImporter:
       name: Asteroids_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 339.75
-        width: 121.75
-        height: 113.25
+        x: 10
+        y: 363
+        width: 95
+        height: 85
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -194,12 +194,12 @@ TextureImporter:
       name: Asteroids_1
       rect:
         serializedVersion: 2
-        x: 121
-        y: 339.75
-        width: 121.75
-        height: 113.25
+        x: 125
+        y: 360
+        width: 102
+        height: 90
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -215,12 +215,12 @@ TextureImporter:
       name: Asteroids_2
       rect:
         serializedVersion: 2
-        x: 242
-        y: 339.75
-        width: 121.75
-        height: 113.25
+        x: 263
+        y: 358
+        width: 85
+        height: 95
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -236,12 +236,12 @@ TextureImporter:
       name: Asteroids_3
       rect:
         serializedVersion: 2
-        x: 363
-        y: 339.75
-        width: 121.75
-        height: 113.25
+        x: 379
+        y: 361
+        width: 100
+        height: 87
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -257,12 +257,12 @@ TextureImporter:
       name: Asteroids_4
       rect:
         serializedVersion: 2
-        x: 0
-        y: 226.75
-        width: 121.75
-        height: 113.25
+        x: 2
+        y: 230
+        width: 104
+        height: 97
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -278,12 +278,12 @@ TextureImporter:
       name: Asteroids_5
       rect:
         serializedVersion: 2
-        x: 121
-        y: 226.75
-        width: 121.75
-        height: 113.25
+        x: 128
+        y: 227
+        width: 98
+        height: 110
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -300,11 +300,11 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 242
-        y: 226.75
-        width: 121.75
-        height: 113.25
+        y: 229
+        width: 124
+        height: 108
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -320,12 +320,12 @@ TextureImporter:
       name: Asteroids_7
       rect:
         serializedVersion: 2
-        x: 363
-        y: 226.75
-        width: 121.75
-        height: 113.25
+        x: 380
+        y: 229
+        width: 102
+        height: 106
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -341,12 +341,12 @@ TextureImporter:
       name: Asteroids_8
       rect:
         serializedVersion: 2
-        x: 0
-        y: 113.75
-        width: 121.75
-        height: 113.25
+        x: 4
+        y: 114
+        width: 105
+        height: 100
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -362,12 +362,12 @@ TextureImporter:
       name: Asteroids_9
       rect:
         serializedVersion: 2
-        x: 121
-        y: 113.75
-        width: 121.75
-        height: 113.25
+        x: 114
+        y: 106
+        width: 124
+        height: 114
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -383,12 +383,12 @@ TextureImporter:
       name: Asteroids_10
       rect:
         serializedVersion: 2
-        x: 242
-        y: 113.75
-        width: 121.75
-        height: 113.25
+        x: 255
+        y: 110
+        width: 101
+        height: 108
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -404,12 +404,12 @@ TextureImporter:
       name: Asteroids_11
       rect:
         serializedVersion: 2
-        x: 363
-        y: 113.75
-        width: 121.75
-        height: 113.25
+        x: 377
+        y: 110
+        width: 103
+        height: 107
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -425,12 +425,12 @@ TextureImporter:
       name: Asteroids_12
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0.75
-        width: 121.75
-        height: 113.25
+        x: 3
+        y: 0
+        width: 110
+        height: 96
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -446,12 +446,12 @@ TextureImporter:
       name: Asteroids_13
       rect:
         serializedVersion: 2
-        x: 121
-        y: 0.75
-        width: 121.75
-        height: 113.25
+        x: 116
+        y: 1
+        width: 122
+        height: 99
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -467,12 +467,12 @@ TextureImporter:
       name: Asteroids_14
       rect:
         serializedVersion: 2
-        x: 242
-        y: 0.75
-        width: 121.75
-        height: 113.25
+        x: 255
+        y: 0
+        width: 101
+        height: 99
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -488,12 +488,12 @@ TextureImporter:
       name: Asteroids_15
       rect:
         serializedVersion: 2
-        x: 363
-        y: 0.75
-        width: 121.75
-        height: 113.25
+        x: 373
+        y: 0
+        width: 112
+        height: 98
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []

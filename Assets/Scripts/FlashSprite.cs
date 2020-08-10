@@ -4,7 +4,7 @@ using UnityEngine;
 
 public static class FlashSprite
 {
-    public const float FlashTime = 0.1f;
+    private const float FlashTime = 0.1f;
     private static readonly WaitForSeconds WaitTimeBetweenSpawningObstacles = new WaitForSeconds(FlashTime);
 
     public static IEnumerator Flash(SpriteRenderer renderer, float cycles, Action completionCallBack)

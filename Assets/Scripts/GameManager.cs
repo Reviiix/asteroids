@@ -7,7 +7,6 @@ using System;
 using System.Collections;
 using Shooting;
 
-
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
@@ -60,6 +59,7 @@ public class GameManager : MonoBehaviour
         ObstacleManager.MoveObstacles();
     }
 
+    [ContextMenu("Reload Game")]
     public void ReloadGame()
     {
         ScoreTracker.Initialise();
@@ -71,8 +71,11 @@ public class GameManager : MonoBehaviour
         playerManager.RestoreHealth();
         
         userInterfaceManager.EnableStartCanvas();
+        
+        DisplayDebugMessage("Game reloaded. Obstacles and bullets \"destroyed\", Time and score reset. Start canvas enabled.");
     }
 
+    [ContextMenu("Start Game Play")]
     public void StartGamePlay()
     {
         EnablePlayerConstraints(false);
@@ -87,9 +90,8 @@ public class GameManager : MonoBehaviour
         DisplayDebugMessage("Game play started.");
     }
     
-
-    [ContextMenu("Player Damaged")]
-    public void PlayerDamaged(int damage)
+    
+    public void OnPlayerCollision(int damage)
     {
         GameArea.CreateDestructionParticle(ReturnPlayer().position);
         audioManager.PlayDestructionSound();
