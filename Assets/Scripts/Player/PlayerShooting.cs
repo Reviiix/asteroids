@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using Shooting;
 using UnityEngine;
 
 namespace Player
 {
-    [Serializable]
-    public class PlayerShooting
+    public static class PlayerShooting
     {
         public static bool canShoot;
         private const int ObjectPoolIndex = BulletManager.ObjectPoolIndex;
@@ -14,12 +12,12 @@ namespace Player
         private const float TimeBetweenShots = 0.3f;
         private static readonly WaitForSeconds WaitTimeBetweenShots = new WaitForSeconds(TimeBetweenShots);
 
-        public void Initialise()
+        public static void Initialise()
         {
             _bulletSpawnLocation = GameManager.ReturnPlayer().GetChild(0).transform;
         }
 
-        public void PlayerShootUpdate()
+        public static void PlayerShootUpdate()
         {
             CheckForInput();
         }

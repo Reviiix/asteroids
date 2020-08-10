@@ -7,6 +7,7 @@ namespace PlayArea
     public class GameArea : MonoBehaviour
     {
         private const int TimeAfterExitTillObjectDisabled = 1;
+        private const int DestructionParticlePrefabPoolIndex = 3;
         public bool horizontalBox;
         
         //The box collider may need to be dynamically sized for varying screen sizes.
@@ -37,6 +38,11 @@ namespace PlayArea
 
                 GameManager.DisplayDebugMessage("Player exited via the " + screenEdge + " of the screen, ejecting them on the opposite side.");
             }
+        }
+        
+        public static void CreateDestructionParticle(Vector3 position)
+        {
+            ObjectPooling.ReturnObjectFromPool(DestructionParticlePrefabPoolIndex, position, Quaternion.identity);
         }
 
         private static ScreenEdge ReturnScreenEdgeFromPosition(bool horizontal, Vector3 position)

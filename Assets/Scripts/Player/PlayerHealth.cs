@@ -4,7 +4,7 @@ using UnityEngine;
 namespace Player
 {
     [Serializable]
-    public class Health
+    public static class PlayerHealth
     {
         public const int MaxHealth = 2;
         [Range(0,MaxHealth)]
@@ -22,7 +22,7 @@ namespace Player
             dead(false);
         }
 
-        public void RestoreHealth()
+        public static void RestoreHealth()
         {
             _health = MaxHealth;
         }
