@@ -103,7 +103,9 @@ public class UserInterfaceManager
         if (ScoreTracker.score >= highScore)
         {
             ChangeTextColors(new [] {highScoreText, finalScoreText}, HighScoreColour);
+            return;
         }
+        ChangeTextColors(new [] {highScoreText, finalScoreText}, Color.white);
     }
 
     private static void ChangeTextColors(IEnumerable<TMP_Text> textsToChange, Color newColor)
