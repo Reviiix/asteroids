@@ -10,6 +10,7 @@ using Shooting;
 public class GameManager : MonoBehaviour
 {
     public const Difficulty GameDifficulty = Difficulty.Hard;
+    public static bool gameOver = false;
     private const bool ShowDebugMessages = true;
     public static GameManager instance;
     public UserInterfaceManager userInterfaceManager;
@@ -52,6 +53,8 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
+        if (gameOver) return;
+            
         playerManager.PlayerUpdate();
         BulletManager.MoveBullets();
         ObstacleManager.MoveObstacles();
@@ -60,6 +63,7 @@ public class GameManager : MonoBehaviour
     [ContextMenu("Reload Game")]
     public void ReloadGame()
     {
+        gameOver = false;
         ScoreTracker.Initialise();
         TimeTracker.Initialise();
         
@@ -142,6 +146,7 @@ public class GameManager : MonoBehaviour
     [ContextMenu("End Game Play")]
     private void EndGame()
     {
+        gameOver = true;
         PlayerManager.EnablePlayerConstraints();
         PlayerHealth.canBeDamaged = false;
         PlayerShooting.canShoot = false;
