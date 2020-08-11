@@ -11,39 +11,38 @@ namespace Statistics
         private static bool _trackTime;
         private static Coroutine _timeTracker;
         private const string TimeDisplayPrefix = "TIME: ";
-        private static DateTime _startTime;
+        private static DateTime _gameStartTime;
+        private static DateTime _pauseStartTime;
+        private static DateTime _pauseEndTime;
+        private static TimeSpan _timePaused;
 
         public static void Initialise()
         {
             _timeText = GameManager.instance.userInterfaceManager.timeText;
-            _timeText.text = TimeDisplayPrefix + "0:00:00";
+            _timeText.text = TimeDisplayPrefix + "0:00.00";
         }
 
         public static void StartTimer()
         {
             _trackTime = true;
-            _startTime = DateTime.Now;
-            _timeTracker = GameManager.instance.StartCoroutine(TrackTime(_startTime));
+            _gameStartTime = DateTime.Now;
+            _timeTracker = GameManager.instance.StartCoroutine(TrackTime(_gameStartTime));
         }
         
         public static void PauseTimer()
         {
-            pauseStart = DateTime.Now;
+            _pauseStartTime = DateTime.Now;
             StopTimer();
         }
 
-        private static DateTime pauseStart;
-        private static DateTime pauseEnd;
-        private static TimeSpan pauseTime;
-        
         public static void ResumeTimer()
         {
-            pauseEnd = DateTime.Now;
-            pauseTime = pauseEnd - pauseStart;
+            _pauseEndTime = DateTime.Now;
+            _timePaused = _pauseEndTime - _pauseStartTime;
             
             _trackTime = true;
-            _startTime += pauseTime;
-            _timeTracker = GameManager.instance.StartCoroutine(TrackTime(_startTime));
+            _gameStartTime += _timePaused;
+            _timeTracker = GameManager.instance.StartCoroutine(TrackTime(_gameStartTime));
         }
         
     
@@ -77,7 +76,7 @@ namespace Statistics
 
         private static void UpdateTimeDisplay(TMP_Text display, DateTime startingTime)
         {
-            display.text = TimeDisplayPrefix + TrackTimeFrom(startingTime).ToString(@"m\:ss\:ff");
+            display.text = TimeDisplayPrefix + TrackTimeFrom(startingTime).ToString(@"m\:ss\.ff");
         }
     
         private static TimeSpan TrackTimeFrom(DateTime originalTime)

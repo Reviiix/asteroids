@@ -3,8 +3,8 @@ using UnityEngine;
 
 namespace Player
 {
-    [Serializable]
-    public static class PlayerHealth
+    //Override this class and remove its static token if there are ever multiple things in your game with health.
+    public static class Health
     {
         public static bool canBeDamaged = true;
         public const int MaxHealth = 2;

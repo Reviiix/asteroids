@@ -29,7 +29,7 @@ namespace Player
         
         public void StartInvincibilitySequence()
         {
-            PlayerHealth.canBeDamaged = false;
+            Health.canBeDamaged = false;
             _playerDamageSequence = GameManager.instance.StartCoroutine(FlashSprite.Flash(playerRenderer, InvincibilityFlashes, StopInvincibilitySequence));
         }
         
@@ -39,16 +39,16 @@ namespace Player
             {
                 GameManager.instance.StopCoroutine(_playerDamageSequence);
             }
-            PlayerHealth.canBeDamaged = true;
+            Health.canBeDamaged = true;
             playerRenderer.enabled = true;
         }
         
         public  void RestoreHealth()
         {
             var userInterface = GameManager.instance.userInterfaceManager;
-            const int maxHealth = PlayerHealth.MaxHealth;
+            const int maxHealth = Health.MaxHealth;
             
-            PlayerHealth.RestoreHealth();
+            Health.RestoreHealth();
 
             for (var i = 0; i <= maxHealth; i++)
             {

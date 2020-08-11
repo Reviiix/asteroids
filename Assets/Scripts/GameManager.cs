@@ -5,7 +5,6 @@ using PlayArea;
 using UnityEngine;
 using System;
 using System.Collections;
-using Shooting;
 
 public class GameManager : MonoBehaviour
 {
@@ -13,11 +12,11 @@ public class GameManager : MonoBehaviour
     private static bool _gameOver;
     private const bool ShowDebugMessages = true;
     public static GameManager instance;
-    public UserInterfaceManager userInterfaceManager;
-    public PlayerManager playerManager;
-    public ObstacleManager obstacleManager;
     public AudioManager audioManager;
+    public ObstacleManager obstacleManager;
     public ObjectPooling objectPools;
+    public PlayerManager playerManager;
+    public UserInterfaceManager userInterfaceManager;
     public Camera mainCamera;
 
     private void Awake()
@@ -44,6 +43,7 @@ public class GameManager : MonoBehaviour
     {
         userInterfaceManager.Initialise();
         playerManager.PlayerInitialise();
+        objectPools.Initialise();
         AudioManager.Initialise();
         BulletManager.Initialise();
         ObstacleManager.Initialise();
@@ -97,7 +97,7 @@ public class GameManager : MonoBehaviour
     
     public void OnPlayerCollision(int damage)
     {
-        if (!PlayerHealth.canBeDamaged)
+        if (!Health.canBeDamaged)
         {
             return;
         }
@@ -111,7 +111,7 @@ public class GameManager : MonoBehaviour
 
         GameAreaTransporter.PlaceObjectInCentre(ReturnPlayer());
         
-        PlayerHealth.TakeDamage(damage, delegate(bool gameOver)
+        Health.TakeDamage(damage, delegate(bool gameOver)
         {
             if (gameOver)
             {
@@ -149,14 +149,14 @@ public class GameManager : MonoBehaviour
     {
         _gameOver = true;
         PlayerManager.EnablePlayerConstraints();
-        PlayerHealth.canBeDamaged = false;
+        Health.canBeDamaged = false;
         PlayerShooting.canShoot = false;
         playerManager.playerRenderer.enabled = false;
         
         obstacleManager.StopCreatObstacleSequence();
 
         TimeTracker.StopTimer();
-        HighSores.SetHighScore(ScoreTracker.score);
+        HighScores.SetHighScore(ScoreTracker.score);
         
         userInterfaceManager.EnableGameOverCanvas();
 

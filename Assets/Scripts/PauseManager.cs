@@ -1,6 +1,5 @@
 ﻿using Obstacles;
 using Player;
-using Shooting;
 using Statistics;
 
 public static class PauseManager

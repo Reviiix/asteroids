@@ -97,7 +97,7 @@ public class UserInterfaceManager
         finalScoreText.text = scoreText.text;
         finalTimeText.text = timeText.text;
         
-        var highScore = HighSores.ReturnHighScore();
+        var highScore = HighScores.ReturnHighScore();
         highScoreText.text = HighScorePrefix + highScore;
 
         if (ScoreTracker.score >= highScore)
