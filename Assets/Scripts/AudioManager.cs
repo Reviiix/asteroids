@@ -38,7 +38,7 @@ public class AudioManager
         PlayClip(buttonClick);
     }
     
-    public static void CreateHashSetOfAudioSourcesFromPools()
+    public static void Initialise()
     {
         for (var i = 0; i < GameManager.instance.objectPools.pools[AudioSourcePoolIndex].maximumActiveObjects; i++)
         {

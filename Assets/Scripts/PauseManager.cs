@@ -9,23 +9,24 @@ public static class PauseManager
     private const float NormalAudioVolume = 1;
     private const float PauseAudioVolume = 0.2f;
     
-    public static void PauseGamePlay()
+    public static void PauseButtonPressed()
     {
         isPaused = !isPaused;
-        StartGame(isPaused);
+        PauseGame(isPaused);
     }
 
-    private static void StartGame(bool state)
+    private static void PauseGame(bool state)
     {
         GameManager.instance.userInterfaceManager.EnablePauseCanvas(state);
         PlayerManager.EnablePlayerConstraints(state);
+        
         ObstacleManager.moveObstacles = !state;
         BulletManager.moveBullets = !state;
         PlayerShooting.canShoot = !state;
-        EnableCoroutines(!state);
+        EnableGamePlayMethods(!state);
     }
 
-    private static void EnableCoroutines(bool state)
+    private static void EnableGamePlayMethods(bool state)
     {
         if (state)
         {

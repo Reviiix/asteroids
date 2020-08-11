@@ -51,7 +51,7 @@ public class UserInterfaceManager
     {
         startButton.onClick.AddListener(() => EnableStartCanvas(false));
         startButton.onClick.AddListener(GameManager.instance.StartGamePlay);
-        pauseButton.onClick.AddListener(PauseManager.PauseGamePlay);
+        pauseButton.onClick.AddListener(PauseManager.PauseButtonPressed);
         restartButton.onClick.AddListener(GameManager.instance.ReloadGame);
         AddButtonClickNoise();
     }
