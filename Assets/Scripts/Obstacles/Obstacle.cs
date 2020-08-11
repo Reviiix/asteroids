@@ -33,20 +33,7 @@ namespace Obstacles
                 BulletPresent(other.transform.parent.gameObject);
             }
         }
-        
-        private void OnTriggerStay2D(Collider2D other)
-        {
-            if (other.CompareTag("Player"))
-            {
-                PlayerPresent();
-            }
-            
-            if (other.CompareTag("Bullet"))
-            {
-                BulletPresent(other.transform.parent.gameObject);
-            }
-        }
-        
+
         private void BulletPresent(GameObject bullet)
         {
             bullet.SetActive(false);
