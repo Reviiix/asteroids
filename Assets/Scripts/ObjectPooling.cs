@@ -1,12 +1,14 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
-public class ObjectPooling : MonoBehaviour
+[Serializable]
+public class ObjectPooling
 {
     public List<Pool> pools;
     public static readonly Dictionary<int, Queue<GameObject>> PoolDictionary = new Dictionary<int, Queue<GameObject>>();
 
-    private void Awake()
+    public void Initialise()
     {
         ConvertPoolListIntoQueue();
     }
@@ -19,7 +21,7 @@ public class ObjectPooling : MonoBehaviour
 
             for (var i = 0; i < pool.maximumActiveObjects; i++)
             {
-                var temporaryVariable = Instantiate(pool.prefab);
+                var temporaryVariable = UnityEngine.Object.Instantiate(pool.prefab);
                 temporaryVariable.SetActive(false);
                 objectPool.Enqueue(temporaryVariable);
             }

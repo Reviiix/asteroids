@@ -41,6 +41,7 @@ namespace Player
             _canRotate = !state;
         }
 
+        //Potential use the job system to do this in the future.
         private static void RotateObjectTowardsPointer(Camera camera, Transform transformToRotate, float rotationSpeed)
         {
             var direction = camera.ScreenToWorldPoint(Input.mousePosition) - transformToRotate.position;
@@ -50,6 +51,7 @@ namespace Player
             transformToRotate.rotation = Quaternion.Slerp(transformToRotate.rotation, rotation, rotationSpeed * Time.deltaTime);
         }
 
+        //Potential use the job system to do this in the future.
         private static void MoveObjectTowardsPointer(Camera camera, Transform transformToMove, float moveSpeed, float remainingDistance)
         {
             var position = transformToMove.position;
