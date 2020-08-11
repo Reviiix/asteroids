@@ -51,7 +51,7 @@ public class UserInterfaceManager
     {
         startButton.onClick.AddListener(() => EnableStartCanvas(false));
         startButton.onClick.AddListener(GameManager.instance.StartGamePlay);
-        pauseButton.onClick.AddListener(PauseManager.PauseGamePlay);
+        pauseButton.onClick.AddListener(PauseManager.PauseButtonPressed);
         restartButton.onClick.AddListener(GameManager.instance.ReloadGame);
         AddButtonClickNoise();
     }
@@ -97,13 +97,15 @@ public class UserInterfaceManager
         finalScoreText.text = scoreText.text;
         finalTimeText.text = timeText.text;
         
-        var highScore = HighSores.ReturnHighScore();
+        var highScore = HighScores.ReturnHighScore();
         highScoreText.text = HighScorePrefix + highScore;
 
         if (ScoreTracker.score >= highScore)
         {
             ChangeTextColors(new [] {highScoreText, finalScoreText}, HighScoreColour);
+            return;
         }
+        ChangeTextColors(new [] {highScoreText, finalScoreText}, Color.white);
     }
 
     private static void ChangeTextColors(IEnumerable<TMP_Text> textsToChange, Color newColor)

@@ -2,7 +2,8 @@
 
 namespace Statistics
 {
-    public static class HighSores
+    //There are better, more secure ways to store data but player prefs will usually do for a prototype.
+    public static class HighScores
     {
         private const string Key = "AsteroidsHighScore";
     

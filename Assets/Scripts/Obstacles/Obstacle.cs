@@ -1,5 +1,4 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Obstacles
 {
@@ -26,15 +25,25 @@ namespace Obstacles
         {
             if (other.CompareTag("Player"))
             {
-                playerPresentInAnyObstacleTrigger = true;
-                GameManager.instance.OnPlayerCollision(DamageFactor);
+                PlayerPresent();
             }
         
             if (other.CompareTag("Bullet"))
             {
-                other.transform.parent.gameObject.SetActive(false);
-                Destroy();
+                BulletPresent(other.transform.parent.gameObject);
             }
+        }
+
+        private void BulletPresent(GameObject bullet)
+        {
+            bullet.SetActive(false);
+            Destroy();
+        }
+
+        private static void PlayerPresent()
+        {
+            playerPresentInAnyObstacleTrigger = true;
+            GameManager.instance.OnPlayerCollision(DamageFactor);
         }
 
         private void OnTriggerExit2D(Collider2D other)

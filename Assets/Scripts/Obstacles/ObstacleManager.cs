@@ -20,12 +20,9 @@ namespace Obstacles
         private readonly Vector3[] obstacleSizes = {new Vector3(0.5f, 0.5f, 0.5f), new Vector3(1f, 1f, 1f), new Vector3(2f, 2f, 2f)};
         private const int ObjectPoolIndex = 2;
         private static Coroutine _obstacleCreationSequence;
-        #region Time Between Obstacles
         private const int TimeBetweenSpawningObstacles = 1;
         private static readonly WaitForSeconds WaitTimeBetweenSpawningObstacles = new WaitForSeconds(TimeBetweenSpawningObstacles);
-        #endregion Time Between Obstacles
-
-        private static int previosSpawnIndex = 0;
+        private static int _previousSpawnIndex;
 
         public static void Initialise()
         {
@@ -53,9 +50,9 @@ namespace Obstacles
             yield return WaitTimeBetweenSpawningObstacles;
             if (Random.Range(0, (int)GameManager.GameDifficulty) != (int)GameManager.GameDifficulty)
             {
-                var currentSpawnIndex = ReturnRandomIndexThatIsNotX(previosSpawnIndex, obstacleSpawnPositions.Length);
+                var currentSpawnIndex = ReturnRandomIndexThatIsNotX(_previousSpawnIndex, obstacleSpawnPositions.Length);
                 CreateObstacle(Obstacle.MaximumAsteroidSize, obstacleSpawnPositions[currentSpawnIndex]);
-                previosSpawnIndex = currentSpawnIndex;
+                _previousSpawnIndex = currentSpawnIndex;
             }
             StartCreatObstacleSequence();
         }
