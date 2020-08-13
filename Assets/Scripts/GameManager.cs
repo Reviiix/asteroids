@@ -22,10 +22,6 @@ public class GameManager : MonoBehaviour
     private void Awake()
     {
         InitialiseVariables();
-    }
-    
-    private void Start()
-    {
         InitialisePlaneOldCSharpClasses();
     }
 
