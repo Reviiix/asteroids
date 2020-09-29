@@ -1,9 +1,9 @@
 ﻿using System;
 using UnityEngine;
 
-namespace Player
+namespace Assets.Scripts.Player
 {
-    //Override this class and remove its static token if there are ever multiple things in your game with health.
+    //Override this class and remove its static token if there are ever multiple things in the game with health.
     public static class Health
     {
         public static bool canBeDamaged = true;

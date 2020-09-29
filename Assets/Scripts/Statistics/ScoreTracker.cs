@@ -1,4 +1,5 @@
-﻿using TMPro;
+﻿using Assets.Scripts;
+using TMPro;
 
 namespace Statistics
 {

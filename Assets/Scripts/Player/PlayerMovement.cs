@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Player
+namespace Assets.Scripts.Player
 {
     public static class PlayerMovement
     {
@@ -9,11 +9,11 @@ namespace Player
         private static bool _canRotate;
         private const float RotationSpeed = 10;
         public const float MovementSpeed = 3;
-        #region MousePlayerActualMinimumDistance
+        #region Mouse And Player Minimum Distance
         private static float _camerasDistanceFromGame;
         private const float MousePlayerMinimumDistance = 0.01f;
         private static float MousePlayerActualMinimumDistance => MousePlayerMinimumDistance + _camerasDistanceFromGame;
-        #endregion MousePlayerActualMinimumDistance
+        #endregion Mouse And Player Minimum Distance
         private static Transform _player;
         
         public static void Initialise()

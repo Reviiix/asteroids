@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using Assets.Scripts.Player;
+using Obstacles;
 using Player;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-namespace Obstacles
+namespace Assets.Scripts.Obstacles
 {
     [Serializable]
     public class ObstacleManager

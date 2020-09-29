@@ -1,4 +1,5 @@
-﻿using Obstacles;
+﻿using Assets.Scripts;
+using Obstacles;
 using UnityEngine;
 
 namespace PlayArea

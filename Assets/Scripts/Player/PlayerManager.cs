@@ -1,4 +1,6 @@
 ﻿using System;
+using Assets.Scripts;
+using Assets.Scripts.Player;
 using UnityEngine;
 
 namespace Player
@@ -7,15 +9,14 @@ namespace Player
     public class PlayerManager 
     {
         public Transform playerTransform;
-        [HideInInspector]
-        public SpriteRenderer playerRenderer;
+        public SpriteRenderer PlayerRenderer { get; private set; }
         public const float SecondsBeforePlayerCanMoveAfterReSpawn = 0.3f;
         private const float InvincibilityFlashes = 25;
         private static Coroutine _playerDamageSequence;
 
         public void PlayerInitialise()
         {
-            playerRenderer = playerTransform.GetComponent<SpriteRenderer>();
+            PlayerRenderer = playerTransform.GetComponent<SpriteRenderer>();
             
             PlayerMovement.Initialise();
             PlayerShooting.Initialise();
@@ -30,7 +31,7 @@ namespace Player
         public void StartInvincibilitySequence()
         {
             Health.canBeDamaged = false;
-            _playerDamageSequence = GameManager.instance.StartCoroutine(FlashSprite.Flash(playerRenderer, InvincibilityFlashes, StopInvincibilitySequence));
+            _playerDamageSequence = GameManager.instance.StartCoroutine(FlashSprite.Flash(PlayerRenderer, InvincibilityFlashes, StopInvincibilitySequence));
         }
         
         public void StopInvincibilitySequence()
@@ -40,7 +41,7 @@ namespace Player
                 GameManager.instance.StopCoroutine(_playerDamageSequence);
             }
             Health.canBeDamaged = true;
-            playerRenderer.enabled = true;
+            PlayerRenderer.enabled = true;
         }
         
         public  void RestoreHealth()

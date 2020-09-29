@@ -1,4 +1,7 @@
-﻿using Obstacles;
+﻿using Assets.Scripts;
+using Assets.Scripts.Obstacles;
+using Assets.Scripts.Player;
+using Obstacles;
 using Player;
 using Statistics;
 

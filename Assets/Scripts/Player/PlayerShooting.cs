@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-namespace Player
+namespace Assets.Scripts.Player
 {
     public static class PlayerShooting
     {
