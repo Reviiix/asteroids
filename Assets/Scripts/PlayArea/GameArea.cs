@@ -1,5 +1,4 @@
-﻿using Obstacles;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Assets.Scripts.PlayArea
 {

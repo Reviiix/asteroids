@@ -1,16 +1,14 @@
-﻿using Assets.Scripts;
-using UnityEngine;
+﻿using UnityEngine;
 
-namespace Obstacles
+namespace Assets.Scripts.Obstacles
 {
     public class Obstacle : MonoBehaviour
     {
         private SpriteRenderer obstacleRenderer;
-        public static bool playerPresentInAnyObstacleTrigger;
         public const int MaximumAsteroidSize = 2;
         private const int DamageFactor = 1;
         [HideInInspector][Range(0, MaximumAsteroidSize)] 
-        public int asteroidSize;
+        private int _asteroidSize;
 
         private void Awake()
         {
@@ -46,7 +44,7 @@ namespace Obstacles
         private void BulletPresent(GameObject bullet)
         {
             bullet.SetActive(false);
-            Destroy();
+            DestroySelf();
         }
 
         private static void PlayerPresent()
@@ -56,16 +54,16 @@ namespace Obstacles
 
         public void OnCreation(int startingAsteroidSize, Sprite newSprite)
         {
-            asteroidSize = startingAsteroidSize;
+            _asteroidSize = startingAsteroidSize;
             obstacleRenderer.sprite = newSprite;
         }
         
-        private void Destroy()
+        private void DestroySelf()
         {
-            asteroidSize--;
+            _asteroidSize--;
             var trans = transform;
             trans.parent.gameObject.SetActive(false);
-            GameManager.instance.OnObstacleDestruction(asteroidSize, trans);
+            GameManager.instance.OnObstacleDestruction(_asteroidSize, trans);
         }
     }
 }

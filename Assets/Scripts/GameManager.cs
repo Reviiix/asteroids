@@ -3,7 +3,6 @@ using System.Collections;
 using Assets.Scripts.Obstacles;
 using Assets.Scripts.PlayArea;
 using Assets.Scripts.Player;
-using Obstacles;
 using Player;
 using Statistics;
 using UnityEngine;
