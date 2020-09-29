@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections;
 using Assets.Scripts.Obstacles;
+using Assets.Scripts.PlayArea;
 using Assets.Scripts.Player;
 using Obstacles;
-using PlayArea;
 using Player;
 using Statistics;
 using UnityEngine;

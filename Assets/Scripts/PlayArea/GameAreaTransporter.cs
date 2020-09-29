@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace PlayArea
+namespace Assets.Scripts.PlayArea
 {
     public static class GameAreaTransporter 
     {

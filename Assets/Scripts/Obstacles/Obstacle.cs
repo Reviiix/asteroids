@@ -34,6 +34,14 @@ namespace Obstacles
                 BulletPresent(other.transform.parent.gameObject);
             }
         }
+        
+        private void OnTriggerStay2D(Collider2D other)
+        {
+            if (other.CompareTag("Player"))
+            {
+                PlayerPresent();
+            }
+        }
 
         private void BulletPresent(GameObject bullet)
         {
@@ -43,16 +51,7 @@ namespace Obstacles
 
         private static void PlayerPresent()
         {
-            playerPresentInAnyObstacleTrigger = true;
             GameManager.instance.OnPlayerCollision(DamageFactor);
-        }
-
-        private void OnTriggerExit2D(Collider2D other)
-        {
-            if (other.CompareTag("Player"))
-            {
-                playerPresentInAnyObstacleTrigger = false;
-            }
         }
 
         public void OnCreation(int startingAsteroidSize, Sprite newSprite)

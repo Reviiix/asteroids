@@ -1,8 +1,7 @@
-﻿using Assets.Scripts;
-using Obstacles;
+﻿using Obstacles;
 using UnityEngine;
 
-namespace PlayArea
+namespace Assets.Scripts.PlayArea
 {
     public class GameArea : MonoBehaviour
     {
@@ -30,8 +29,7 @@ namespace PlayArea
 
             if (other.gameObject.CompareTag("Player"))
             {
-                if (Obstacle.playerPresentInAnyObstacleTrigger) return;
-                
+
                 var screenEdge = ReturnScreenEdgeFromPosition(horizontalBox, other.transform.position);
 
                 GameAreaTransporter.MoveToScreenEdge(other.transform, screenEdge);
