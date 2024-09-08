@@ -7,7 +7,6 @@ namespace Assets.Scripts.Obstacles
         private SpriteRenderer obstacleRenderer;
         public const int MaximumAsteroidSize = 2;
         private const int DamageFactor = 1;
-        [HideInInspector][Range(0, MaximumAsteroidSize)] 
         private int _asteroidSize;
 
         private void Awake()
@@ -49,7 +48,7 @@ namespace Assets.Scripts.Obstacles
 
         private static void PlayerPresent()
         {
-            GameManager.instance.OnPlayerCollision(DamageFactor);
+            GameManager.Instance.OnPlayerCollision(DamageFactor);
         }
 
         public void OnCreation(int startingAsteroidSize, Sprite newSprite)
@@ -63,7 +62,7 @@ namespace Assets.Scripts.Obstacles
             _asteroidSize--;
             var trans = transform;
             trans.parent.gameObject.SetActive(false);
-            GameManager.instance.OnObstacleDestruction(_asteroidSize, trans);
+            GameManager.Instance.OnObstacleDestruction(_asteroidSize, trans);
         }
     }
 }

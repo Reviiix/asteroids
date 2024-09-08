@@ -4,41 +4,36 @@ using Assets.Scripts.Obstacles;
 using Assets.Scripts.PlayArea;
 using Assets.Scripts.Player;
 using Player;
+using PureFunctions.UnitySpecific;
 using Statistics;
 using UnityEngine;
 
 namespace Assets.Scripts
 {
-    public class GameManager : MonoBehaviour
+    public class GameManager : Singleton<GameManager>
     {
         public const Difficulty GameDifficulty = Difficulty.Hard;
         private static bool _gameOver;
-        private const bool ShowDebugMessages = true;
-        public static GameManager instance;
         public AudioManager audioManager;
         public ObstacleManager obstacleManager;
         public ObjectPooling objectPools;
-        [SerializeField] private PlayerManager playerManager;
         public UserInterfaceManager userInterfaceManager;
         public Camera mainCamera;
+        [SerializeField] private PlayerManager playerManager;
 
-        private void Awake()
+        protected override void OnEnable()
         {
-            ResolveDependencies();
-            InitialisePlaneOldCSharpClasses();
+            base.OnEnable();
+            Initialise();
         }
 
-        private void OnDisable()
+        protected override void OnDisable()
         {
+            base.OnDisable();
             StopAllCoroutines();
         }
-    
-        private void ResolveDependencies()
-        {
-            instance = this;
-        }
 
-        private void InitialisePlaneOldCSharpClasses()
+        private void Initialise()
         {
             userInterfaceManager.Initialise();
             playerManager.PlayerInitialise();
@@ -74,8 +69,6 @@ namespace Assets.Scripts
             playerManager.RestoreHealth();
         
             userInterfaceManager.EnableStartCanvas();
-        
-            DisplayDebugMessage("Game reloaded. Obstacles and bullets \"destroyed\", time/score reset and start canvas enabled.");
         }
 
         [ContextMenu("Start Game Play")]
@@ -90,8 +83,6 @@ namespace Assets.Scripts
             playerManager.PlayerRenderer.enabled = true;
             playerManager.StopInvincibilitySequence();
             PlayerShooting.canShoot = true;
-
-            DisplayDebugMessage("Game play started.");
         }
     
     
@@ -126,7 +117,6 @@ namespace Assets.Scripts
                     }));
                 }
             });
-            DisplayDebugMessage("Player received " + damage + "damage.");
         }
 
         public void OnObstacleDestruction(int asteroidSize, Transform position)
@@ -159,28 +149,17 @@ namespace Assets.Scripts
             HighScores.SetHighScore(ScoreTracker.score);
         
             userInterfaceManager.EnableGameOverCanvas();
-
-            DisplayDebugMessage("Game play over.");
         }
 
         public static Transform ReturnPlayer()
         {
-            return instance.playerManager.playerTransform;
+            return Instance.playerManager.playerTransform;
         }
 
         public static IEnumerator Wait(float seconds, Action callBack)
         {
             yield return new WaitForSeconds(seconds);
             callBack();
-        }
-    
-        public static void DisplayDebugMessage(string message)
-        {
-            // ReSharper disable once ConditionIsAlwaysTrueOrFalse
-            if (ShowDebugMessages)
-            {
-                Debug.Log(message);
-            }
         }
     }
 

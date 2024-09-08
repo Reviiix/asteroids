@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using Assets.Scripts;
+using PureFunctions.UnitySpecific;
 using TMPro;
 using UnityEngine;
 
@@ -19,7 +20,7 @@ namespace Statistics
 
         public static void Initialise()
         {
-            _timeText = GameManager.instance.userInterfaceManager.timeText;
+            _timeText = GameManager.Instance.userInterfaceManager.timeText;
             _timeText.text = TimeDisplayPrefix + "0:00.00";
         }
 
@@ -27,7 +28,7 @@ namespace Statistics
         {
             _trackTime = true;
             _gameStartTime = DateTime.Now;
-            _timeTracker = GameManager.instance.StartCoroutine(TrackTime(_gameStartTime));
+            _timeTracker = Coroutiner.StartCoroutine(TrackTime(_gameStartTime)).Coroutine;
         }
         
         public static void PauseTimer()
@@ -43,7 +44,7 @@ namespace Statistics
             
             _trackTime = true;
             _gameStartTime += _timePaused;
-            _timeTracker = GameManager.instance.StartCoroutine(TrackTime(_gameStartTime));
+            _timeTracker = Coroutiner.StartCoroutine(TrackTime(_gameStartTime)).Coroutine;
         }
         
     
@@ -71,7 +72,7 @@ namespace Statistics
         {
             if (_timeTracker != null)
             {
-                GameManager.instance.StopCoroutine(_timeTracker);
+                Coroutiner.StopCoroutine(_timeTracker);
             }
         }
 

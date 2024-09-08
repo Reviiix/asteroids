@@ -29,7 +29,6 @@ public class ObjectPooling
             
             if (PoolDictionary.ContainsKey(pool.index))
             {
-                GameManager.DisplayDebugMessage("Replacing object pool " + pool.index);
                 PoolDictionary.Remove(pool.index);
             }
             

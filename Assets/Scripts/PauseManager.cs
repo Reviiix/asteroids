@@ -16,7 +16,7 @@ public static class PauseManager
 
     private static void PauseGame(bool state)
     {
-        GameManager.instance.userInterfaceManager.EnablePauseCanvas(state);
+        GameManager.Instance.userInterfaceManager.EnablePauseCanvas(state);
         PlayerManager.EnablePlayerConstraints(state);
         
         ObstacleManager.moveObstacles = !state;
@@ -31,11 +31,11 @@ public static class PauseManager
         if (state)
         {
             TimeTracker.ResumeTimer();
-            GameManager.instance.obstacleManager.StartCreatObstacleSequence();
+            GameManager.Instance.obstacleManager.StartCreatObstacleSequence();
             return;
         }
         TimeTracker.PauseTimer();
-        GameManager.instance.obstacleManager.StopCreatObstacleSequence();
+        GameManager.Instance.obstacleManager.StopCreatObstacleSequence();
     }
     
 }

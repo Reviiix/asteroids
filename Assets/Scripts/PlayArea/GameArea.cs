@@ -8,7 +8,6 @@ namespace Assets.Scripts.PlayArea
         private const int DestructionParticlePrefabPoolIndex = 3;
         public bool horizontalBox;
         
-        //The box collider may need to be dynamically sized for unconventional screen sizes that dont conform to the standard 16:9 / 5:3 conventions.
         private void OnTriggerExit2D(Collider2D other)
         {
             if (other.gameObject.CompareTag("Bullet"))
@@ -32,8 +31,6 @@ namespace Assets.Scripts.PlayArea
                 var screenEdge = ReturnScreenEdgeFromPosition(horizontalBox, other.transform.position);
 
                 GameAreaTransporter.MoveToScreenEdge(other.transform, screenEdge);
-
-                GameManager.DisplayDebugMessage("Player exited via the " + screenEdge + " of the screen, ejecting them on the opposite side.");
             }
         }
         

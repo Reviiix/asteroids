@@ -58,17 +58,17 @@ namespace Assets.Scripts
         private void AddButtonEvents()
         {
             startButton.onClick.AddListener(() => EnableStartCanvas(false));
-            startButton.onClick.AddListener(GameManager.instance.StartGamePlay);
+            startButton.onClick.AddListener(GameManager.Instance.StartGamePlay);
             pauseButton.onClick.AddListener(PauseManager.PauseButtonPressed);
-            restartButton.onClick.AddListener(GameManager.instance.ReloadGame);
+            restartButton.onClick.AddListener(GameManager.Instance.ReloadGame);
             AddButtonClickNoise();
         }
 
         private void AddButtonClickNoise()
         {
-            startButton.onClick.AddListener(GameManager.instance.audioManager.PlayButtonClickSound);
-            restartButton.onClick.AddListener(GameManager.instance.audioManager.PlayButtonClickSound);
-            pauseButton.onClick.AddListener(GameManager.instance.audioManager.PlayButtonClickSound);
+            startButton.onClick.AddListener(GameManager.Instance.audioManager.PlayButtonClickSound);
+            restartButton.onClick.AddListener(GameManager.Instance.audioManager.PlayButtonClickSound);
+            pauseButton.onClick.AddListener(GameManager.Instance.audioManager.PlayButtonClickSound);
         }
 
         public void UpdateLivesDisplay(bool increase)
@@ -90,7 +90,6 @@ namespace Assets.Scripts
         
             EnabledAllNonPermanentCanvases(false);
             startCanvas.enabled = state;
-            SequentiallyChangeTextColour.StartChangeTextColorSequence(startButton.GetComponent<TMP_Text>());
         }
 
         public void EnableGameOverCanvas(bool state = true)
@@ -99,9 +98,7 @@ namespace Assets.Scripts
         
             EnabledAllNonPermanentCanvases(false);
             gameOverCanvas.enabled = state;
-        
-            SequentiallyChangeTextColour.StartChangeTextColorSequence(restartButton.GetComponent<TMP_Text>());
-        
+            
             finalScoreText.text = scoreText.text;
             finalTimeText.text = timeText.text;
         
@@ -142,8 +139,6 @@ namespace Assets.Scripts
             startCanvas.enabled = state;
             gameOverCanvas.enabled = state;
             pauseCanvas.enabled = state;
-        
-            SequentiallyChangeTextColour.StopChangeTextColorSequence();
         }
     }
 }

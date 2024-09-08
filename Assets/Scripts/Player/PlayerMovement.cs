@@ -19,7 +19,7 @@ namespace Assets.Scripts.Player
         public static void Initialise()
         {
             _player = GameManager.ReturnPlayer();
-            _mainCamera = GameManager.instance.mainCamera;
+            _mainCamera = GameManager.Instance.mainCamera;
             _camerasDistanceFromGame = -_mainCamera.transform.position.z;
         }
 

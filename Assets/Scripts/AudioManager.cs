@@ -44,7 +44,7 @@ namespace Assets.Scripts
     
         public static void Initialise()
         {
-            for (var i = 0; i < GameManager.instance.objectPools.pools[AudioSourcePoolIndex].maximumActiveObjects; i++)
+            for (var i = 0; i < GameManager.Instance.objectPools.pools[AudioSourcePoolIndex].maximumActiveObjects; i++)
             {
                 AudioSources.Add(ObjectPooling.ReturnObjectFromPool(0, AudioSourceStartingLocation, Quaternion.identity).GetComponent<AudioSource>());
             }

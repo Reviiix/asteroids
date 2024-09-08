@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Assets.Scripts.Player;
+using PureFunctions.UnitySpecific;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -11,13 +12,11 @@ namespace Assets.Scripts.Obstacles
     public class ObstacleManager
     {
         public static bool moveObstacles = true;
-        private static readonly List<GameObject> Obstacles = new List<GameObject>();
+        private static readonly List<GameObject> Obstacles = new ();
         private const float ObstacleMovementSpeed = PlayerMovement.MovementSpeed - float.Epsilon;
-        [SerializeField]
-        private Transform[] obstacleSpawnPositions;
-        [SerializeField]
-        private Sprite[] obstacleSprites;
-        private readonly Vector3[] obstacleSizes = {new Vector3(0.5f, 0.5f, 0.5f), new Vector3(1f, 1f, 1f), new Vector3(2f, 2f, 2f)};
+        [SerializeField] private Transform[] obstacleSpawnPositions;
+        [SerializeField] private Sprite[] obstacleSprites;
+        private readonly Vector3[] obstacleSizes = {new (0.5f, 0.5f, 0.5f), new (1f, 1f, 1f), new (2f, 2f, 2f)};
         private const int ObjectPoolIndex = 2;
         private static Coroutine _obstacleCreationSequence;
         private const int TimeBetweenSpawningObstacles = 1;
@@ -34,14 +33,14 @@ namespace Assets.Scripts.Obstacles
 
         public void StartCreatObstacleSequence()
         {
-            _obstacleCreationSequence = GameManager.instance.StartCoroutine(ContinuouslyCreatObstaclesSequence());
+            _obstacleCreationSequence = Coroutiner.StartCoroutine(ContinuouslyCreatObstaclesSequence()).Coroutine;
         }
     
         public void StopCreatObstacleSequence()
         {
             if (_obstacleCreationSequence != null)
             {
-                GameManager.instance.StopCoroutine(_obstacleCreationSequence);
+                Coroutiner.StopCoroutine(_obstacleCreationSequence);
             }
         }
 
@@ -60,15 +59,11 @@ namespace Assets.Scripts.Obstacles
         private static int ReturnRandomIndexThatIsNotX(int x, int maxValue)
         {
             var returnVariable = Random.Range(0, maxValue);
-            
-            // ReSharper disable once TailRecursiveCall
             return returnVariable == x ? ReturnRandomIndexThatIsNotX(x, maxValue) : returnVariable;
         }
 
         public void CreateObstacle(int asteroidSize, Transform spawnPosition, bool randomRotate = false)
         {
-            GameManager.DisplayDebugMessage("Asteroid created. Size: " + asteroidSize + ". Location: " + spawnPosition);
-            
             var obstacle = ObjectPooling.ReturnObjectFromPool(ObjectPoolIndex, spawnPosition.position, spawnPosition.rotation);
             obstacle.transform.localScale = obstacleSizes[asteroidSize];
             obstacle.GetComponentInChildren<Obstacle>().OnCreation(asteroidSize, obstacleSprites[Random.Range(0, obstacleSprites.Length)]);

@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using PureFunctions.UnitySpecific;
 using UnityEngine;
 
 namespace Assets.Scripts.Player
@@ -10,7 +11,7 @@ namespace Assets.Scripts.Player
         private const int ObjectPoolIndex = BulletManager.ObjectPoolIndex;
         private static Transform _bulletSpawnLocation;
         private const float TimeBetweenShots = 0.3f;
-        private static readonly WaitForSeconds WaitTimeBetweenShots = new WaitForSeconds(TimeBetweenShots);
+        private static readonly WaitForSeconds WaitTimeBetweenShots = new (TimeBetweenShots);
 
         public static void Initialise()
         {
@@ -32,12 +33,12 @@ namespace Assets.Scripts.Player
             
             _shootDelay = false;
             
-            GameManager.instance.StartCoroutine(SpawnBullet());
+            Coroutiner.StartCoroutine(SpawnBullet());
         }
 
         private static IEnumerator SpawnBullet()
         {
-            GameManager.instance.audioManager.PlayGunShotSound();
+            GameManager.Instance.audioManager.PlayGunShotSound();
             ObjectPooling.ReturnObjectFromPool(ObjectPoolIndex, _bulletSpawnLocation.position, _bulletSpawnLocation.rotation);
             yield return WaitTimeBetweenShots;
             _shootDelay = true;

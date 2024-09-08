@@ -1,6 +1,7 @@
 ﻿using System;
 using Assets.Scripts;
 using Assets.Scripts.Player;
+using PureFunctions.UnitySpecific;
 using UnityEngine;
 
 namespace Player
@@ -31,14 +32,14 @@ namespace Player
         public void StartInvincibilitySequence()
         {
             Health.canBeDamaged = false;
-            _playerDamageSequence = GameManager.instance.StartCoroutine(FlashSprite.Flash(PlayerRenderer, InvincibilityFlashes, StopInvincibilitySequence));
+            _playerDamageSequence = Coroutiner.StartCoroutine(FlashSprite.Flash(PlayerRenderer, InvincibilityFlashes, new WaitForSeconds(0.1f), StopInvincibilitySequence)).Coroutine;
         }
         
         public void StopInvincibilitySequence()
         {
             if (_playerDamageSequence != null)
             {
-                GameManager.instance.StopCoroutine(_playerDamageSequence);
+                Coroutiner.StopCoroutine(_playerDamageSequence);
             }
             Health.canBeDamaged = true;
             PlayerRenderer.enabled = true;
@@ -46,7 +47,7 @@ namespace Player
         
         public  void RestoreHealth()
         {
-            var userInterface = GameManager.instance.userInterfaceManager;
+            var userInterface = GameManager.Instance.userInterfaceManager;
             const int maxHealth = Health.MaxHealth;
             
             Health.RestoreHealth();
