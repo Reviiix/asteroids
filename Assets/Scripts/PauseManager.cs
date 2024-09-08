@@ -7,9 +7,7 @@ using Statistics;
 public static class PauseManager
 {
     public static bool isPaused;
-    private const float NormalAudioVolume = 1;
-    private const float PauseAudioVolume = 0.2f;
-    
+
     public static void PauseButtonPressed()
     {
         isPaused = !isPaused;
@@ -29,16 +27,15 @@ public static class PauseManager
 
     private static void EnableGamePlayMethods(bool state)
     {
+        AudioManager.SetPauseVolume(state);
         if (state)
         {
             TimeTracker.ResumeTimer();
             GameManager.instance.obstacleManager.StartCreatObstacleSequence();
-            AudioManager.SetGlobalVolume(NormalAudioVolume);
             return;
         }
         TimeTracker.PauseTimer();
         GameManager.instance.obstacleManager.StopCreatObstacleSequence();
-        AudioManager.SetGlobalVolume(PauseAudioVolume);
     }
     
 }

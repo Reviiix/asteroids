@@ -5,7 +5,7 @@ using UnityEngine;
 public static class FlashSprite
 {
     private const float FlashTime = 0.1f;
-    private static readonly WaitForSeconds WaitFlashTime = new WaitForSeconds(FlashTime);
+    private static readonly WaitForSeconds WaitFlashTime = new (FlashTime);
 
     public static IEnumerator Flash(SpriteRenderer renderer, float cycles, Action completionCallBack)
     {

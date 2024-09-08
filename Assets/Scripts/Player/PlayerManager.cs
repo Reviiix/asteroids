@@ -59,7 +59,7 @@ namespace Player
         
         public static void EnablePlayerConstraints(bool state = true)
         {
-            PlayerMovement.EnablePlayerMovementConstraints(state);
+            PlayerMovement.RestrictPlayerMovement(state);
             PlayerShooting.canShoot = !state;
         }
     }

@@ -18,8 +18,7 @@ namespace Assets.Scripts
         public AudioManager audioManager;
         public ObstacleManager obstacleManager;
         public ObjectPooling objectPools;
-        [SerializeField]
-        private PlayerManager playerManager;
+        [SerializeField] private PlayerManager playerManager;
         public UserInterfaceManager userInterfaceManager;
         public Camera mainCamera;
 
