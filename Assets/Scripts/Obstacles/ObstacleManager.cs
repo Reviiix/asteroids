@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using Assets.Scripts.Player;
 using PureFunctions.UnitySpecific;
@@ -8,8 +7,7 @@ using Random = UnityEngine.Random;
 
 namespace Assets.Scripts.Obstacles
 {
-    [Serializable]
-    public class ObstacleManager
+    public class ObstacleManager : MonoBehaviour
     {
         public static bool moveObstacles = true;
         private static readonly List<GameObject> Obstacles = new ();

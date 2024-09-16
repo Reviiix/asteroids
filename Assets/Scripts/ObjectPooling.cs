@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using Assets.Scripts;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
-[Serializable]
-public class ObjectPooling
+public class ObjectPooling : MonoBehaviour
 {
     public List<Pool> pools;
     public static readonly Dictionary<int, Queue<GameObject>> PoolDictionary = new Dictionary<int, Queue<GameObject>>();

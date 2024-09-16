@@ -6,7 +6,7 @@ using UnityEngine;
 namespace Assets.Scripts
 {
     [Serializable]
-    public class AudioManager 
+    public class AudioManager : MonoBehaviour
     {
         private static readonly Vector3 AudioSourceStartingLocation = Vector3.zero;
         private const int AudioSourcePoolIndex = 0;

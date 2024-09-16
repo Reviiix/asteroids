@@ -7,41 +7,29 @@ using UnityEngine.UI;
 
 namespace Assets.Scripts
 {
-    [Serializable]
-    public class UserInterfaceManager
+    public class UserInterfaceManager : MonoBehaviour
     {
         [Header("Player HUD")]
         public TMP_Text timeText;
         public TMP_Text scoreText;
-        [SerializeField]
-        private RawImage[] livesDisplay;
-        [SerializeField]
-        private Button pauseButton;
+        [SerializeField] private RawImage[] livesDisplay;
+        [SerializeField] private Button pauseButton;
         private Image pauseButtonImage;
-        [SerializeField] 
-        private Sprite pauseSprite;
-        [SerializeField] 
-        private Sprite playSprite;
-
-        [SerializeField] [Header("Introduction Menu")]
-        private Canvas startCanvas;
+        [SerializeField] private Sprite pauseSprite;
+        [SerializeField] private Sprite playSprite;
+        [Header("Introduction Menu")]
+        [SerializeField] private Canvas startCanvas;
         public Button startButton;
-    
-        [SerializeField] [Header("Pause Menu")]
-        private Canvas pauseCanvas;
-
-        [SerializeField] [Header("Game Over Menu")]
-        private Canvas gameOverCanvas;
-        [SerializeField]
-        private TMP_Text finalTimeText;
-        [SerializeField]
-        private TMP_Text finalScoreText;
-        [SerializeField]
-        private TMP_Text highScoreText;
+        [Header("Pause Menu")]
+        [SerializeField] private Canvas pauseCanvas;
+        [Header("Game Over Menu")]
+        [SerializeField] private Canvas gameOverCanvas;
+        [SerializeField] private TMP_Text finalTimeText;
+        [SerializeField] private TMP_Text finalScoreText;
+        [SerializeField] private TMP_Text highScoreText;
         private const string HighScorePrefix = "HIGHSCORE: ";
         private static readonly Color HighScoreColour = Color.green;
-        [SerializeField]
-        private Button restartButton;
+        [SerializeField] private Button restartButton;
     
         public void Initialise()
         {
