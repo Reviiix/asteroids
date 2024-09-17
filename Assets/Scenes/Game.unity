@@ -2451,16 +2451,19 @@ MonoBehaviour:
   - index: 0
     prefab: {fileID: 8622039738344845493, guid: 45d91b84470c048bdb9b4158697c256f,
       type: 3}
-    maximumActiveObjects: 0
-  - index: 0
-    prefab: {fileID: 0}
-    maximumActiveObjects: 0
-  - index: 0
-    prefab: {fileID: 0}
-    maximumActiveObjects: 0
-  - index: 0
-    prefab: {fileID: 0}
-    maximumActiveObjects: 0
+    maximumActiveObjects: 5
+  - index: 1
+    prefab: {fileID: 6515725625987011238, guid: 625b831efcf2b4dc39d8913908cd64d5,
+      type: 3}
+    maximumActiveObjects: 20
+  - index: 2
+    prefab: {fileID: 1351154461578136305, guid: 0e6c16d83c4a7470f98b1a5ef4e2da35,
+      type: 3}
+    maximumActiveObjects: 50
+  - index: 3
+    prefab: {fileID: 2418751814460393903, guid: 6b0a2c6b0bc6e4b6499d30cf4bfded0a,
+      type: 3}
+    maximumActiveObjects: 20
 --- !u!4 &1333832160
 Transform:
   m_ObjectHideFlags: 0
@@ -3108,8 +3111,32 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5215be098af874eaa8bbfbc3fd5c558e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  obstacleSpawnPositions: []
-  obstacleSprites: []
+  obstacleSpawnPositions:
+  - {fileID: 133465702}
+  - {fileID: 433227896}
+  - {fileID: 152989941}
+  - {fileID: 359075172}
+  - {fileID: 705547136}
+  - {fileID: 1903659619}
+  - {fileID: 87246701}
+  - {fileID: 845235246}
+  obstacleSprites:
+  - {fileID: -2244543243340742949, guid: 452a9c732d6a0486bbc7580434e91642, type: 3}
+  - {fileID: 2619520171403366046, guid: 452a9c732d6a0486bbc7580434e91642, type: 3}
+  - {fileID: 1335499673870057088, guid: 452a9c732d6a0486bbc7580434e91642, type: 3}
+  - {fileID: 1507908627372422575, guid: 452a9c732d6a0486bbc7580434e91642, type: 3}
+  - {fileID: -7919934119786583522, guid: 452a9c732d6a0486bbc7580434e91642, type: 3}
+  - {fileID: -1929366605773643366, guid: 452a9c732d6a0486bbc7580434e91642, type: 3}
+  - {fileID: -999273910119505843, guid: 452a9c732d6a0486bbc7580434e91642, type: 3}
+  - {fileID: 8961905289132254908, guid: 452a9c732d6a0486bbc7580434e91642, type: 3}
+  - {fileID: 5910077189670250263, guid: 452a9c732d6a0486bbc7580434e91642, type: 3}
+  - {fileID: -8865693707184755064, guid: 452a9c732d6a0486bbc7580434e91642, type: 3}
+  - {fileID: 1031131993308064179, guid: 452a9c732d6a0486bbc7580434e91642, type: 3}
+  - {fileID: 750050500109240725, guid: 452a9c732d6a0486bbc7580434e91642, type: 3}
+  - {fileID: -7104540694748506238, guid: 452a9c732d6a0486bbc7580434e91642, type: 3}
+  - {fileID: 5907881119353872011, guid: 452a9c732d6a0486bbc7580434e91642, type: 3}
+  - {fileID: -7502166565212197942, guid: 452a9c732d6a0486bbc7580434e91642, type: 3}
+  - {fileID: -1787493986476153839, guid: 452a9c732d6a0486bbc7580434e91642, type: 3}
 --- !u!4 &1812758339
 Transform:
   m_ObjectHideFlags: 0
